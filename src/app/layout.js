@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Aldo Portillo",
   description: "Welcome to my portfolio",
+  image: "../../public/save-icon.png",
+  favicon: "../../public/save-icon.png",
+  
 };
 
 export default function RootLayout({ children }) {
