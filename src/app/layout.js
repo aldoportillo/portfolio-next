@@ -2,15 +2,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 
+
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "Aldo Portillo",
-  description: "Welcome to my portfolio",
-  image: "../../public/save-icon.png",
-  favicon: "../../public/save-icon.png",
-  
-};
+
 
 export default function RootLayout({ children }) {
   return (
