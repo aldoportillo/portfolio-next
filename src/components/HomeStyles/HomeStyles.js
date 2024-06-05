@@ -39,6 +39,7 @@ const Inline = styled.div`
 
   img {
     width: 100%;
+    height: auto;
     max-width: 300px;
     margin-top: 20px;
   }
