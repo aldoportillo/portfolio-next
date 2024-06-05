@@ -12,7 +12,24 @@ export function generateMetadata({params}){
 function Blog({ params }) {
     console.log(params)
   return (
-    <div>Blog {params.blog}</div>
+    <div>
+      <h2>Load Balancing Algorithms</h2>
+
+      <h3>Static Load Balancing Algorithms</h3>
+
+      <ul>
+        <li>Round Robin</li>
+        <li>Weighted Round-Robin</li>
+        <li>Source IP Hash</li>
+      </ul>
+
+      <h3>Dynamic Load Balancing Algorithms</h3>
+
+      <ul>
+        <li>Least Connections</li>
+        <li>Least Response Time</li>
+      </ul>
+    </div>
   )
 }
 
