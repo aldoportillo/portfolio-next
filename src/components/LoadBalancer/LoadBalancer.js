@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaServer } from 'react-icons/fa';
 import { GiServerRack } from "react-icons/gi";
@@ -9,6 +9,7 @@ function LoadBalancerAnimation() {
   const [requestNumber, setRequestNumber] = useState(0);
   const requestCounter = useRef(0);
   const [requestsPerCycle, setRequestsPerCycle] = useState(10);
+  const [activeRequests, setActiveRequests] = useState([]);
 
   const [servers, setServers] = useState([
     { id: 0, name: "Server 0", weight: 0.5, hits: 0 },
@@ -50,6 +51,7 @@ function LoadBalancerAnimation() {
   const sendRequest = () => {
     const serverIndex = getNextServerIndex();
     if (serverIndex !== null) {
+
       const updatedServers = servers.map((server, index) => {
         if (index === serverIndex) {
           return { ...server, hits: server.hits + 1 };
@@ -57,11 +59,34 @@ function LoadBalancerAnimation() {
         return server;
       });
       setServers(updatedServers);
+  
+
+      const newRequest = {
+        id: requestNumber,
+        serverId: serverIndex
+      };
+      setActiveRequests(current => [...current, newRequest]);
+  
+      setTimeout(() => {
+        setActiveRequests(current => current.filter(req => req.id !== newRequest.id));
+      }, 1000);
+  
       console.log("Request sent to server", servers[serverIndex].name, "Hits:", servers[serverIndex].hits);
     }
-    setRequestNumber(prev => prev + 1); 
+    setRequestNumber(prev => prev + 1);
   };
 
+  useEffect(() => {
+    setActiveRequests([]);
+    setRequestNumber(0);
+    requestCounter.current = 0;
+    setServers([
+      { id: 0, name: "Server 0", weight: 0.5, hits: 0 },
+      { id: 1, name: "Server 1", weight: 0.3, hits: 0 },
+      { id: 2, name: "Server 2", weight: 0.2, hits: 0 }
+    ]);
+  }, [strategy]);
+  
   return (
     <LoadBalancerAnimationWrapper>
       <BalancerAndServers>
@@ -72,33 +97,70 @@ function LoadBalancerAnimation() {
         <Servers>
           {servers.map(server => (
             <Icon key={server.id}>
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
                 <FaServer />
-                <p>{server.name}</p>
-                <p>{strategy === "weightRoundRobin" && <span>Weight: <input type="number" value={server.weight} onChange={e => updateWeight(server.id, parseFloat(e.target.value))} min="0" step="0.1" /></span>}</p>
-                <p>Hits: {server.hits}</p>
+                <Text>server-{server.id}</Text>
+                <Text>{strategy === "weightRoundRobin" && <Input><label>Weight: </label><input type="number" value={server.weight} onChange={e => updateWeight(server.id, parseFloat(e.target.value))} min="0" step="0.1" /></Input>}</Text>
+                <Text>Hits: {server.hits}</Text>
+              </motion.div>
+              {activeRequests.map(req => req.serverId === server.id && (
+                <Request
+                  key={req.id}
+                  initial={{ x: -100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: 100, opacity: 0 }}
+                  transition={{ duration: 1 }}
+                >
+                  Request: {req.id}
+                </Request>
+              ))}
             </Icon>
           ))}
         </Servers>
       </BalancerAndServers>
       <Options>
-        <button onClick={() => setStrategy("roundRobin")}>Round Robin</button>
-        <button onClick={() => setStrategy("weightRoundRobin")}>Weighted Round Robin</button>
-        <button onClick={() => setStrategy("sourceIpHash")}>Source IP Hash</button>
+        <Button onClick={() => setStrategy("roundRobin")} selected={strategy === "roundRobin"}>Round Robin</Button>
+        <Button onClick={() => setStrategy("weightRoundRobin")} selected={strategy === "weightRoundRobin"}>Weighted Round Robin</Button>
+        <Button onClick={() => setStrategy("sourceIpHash")} selected={strategy=== "sourceIpHash"}>Source IP Hash</Button>
         <div>
         {strategy === "weightRoundRobin" && (
-          <>
-            <label>Requests per Cycle: </label>
+          <Input>
+            <label>RPS:</label>
             <input type="number" value={requestsPerCycle} onChange={e => setRequestsPerCycle(parseInt(e.target.value, 10))} min="1" />
-          </>
+          </Input>
         )}
         </div>
       </Options>
     </LoadBalancerAnimationWrapper>
   );
+  
 }
 
 
 export default LoadBalancerAnimation;
+
+const Button = styled.button`
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: "green";
+  }
+
+  &[selected="true"] {
+    background-color: "blue";
+  }
+`;
 
 const LoadBalancerAnimationWrapper = styled.div`
   background-color: #333;
@@ -107,8 +169,6 @@ const LoadBalancerAnimationWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  height: 100vh;
-  width: 100%;
 `;
 
 const BalancerAndServers = styled.div`
@@ -144,3 +204,34 @@ const Options = styled.div`
   gap: 20px;
   margin-top: 20px;
 `;
+
+const Request = styled(motion.div)`
+  color: white;
+  background-color: green;
+`;
+
+const Text = styled.p`
+  font-size: 0.6em;
+`;
+
+const Input = styled.span`
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 10px;
+  gap: 5px;
+
+  input {
+    font-size: 0.6em;
+    width:40px;
+    margin-top: 5px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #ccc
+  }
+
+  input:focus {
+    outline: none;
+  }
+  `
