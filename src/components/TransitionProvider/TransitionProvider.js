@@ -2,83 +2,93 @@
 
 import { AnimatePresence } from "framer-motion";
 import Navbar from "@/components/NavBar";
+import Footer from "../Footer";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import Footer from "../Footer";
+import styled from "styled-components";
 
 const TransitionProvider = ({ children }) => {
   const pathName = usePathname();
 
   return (
     <AnimatePresence mode="wait">
-      <div
-        key={pathName}
-        style={{
-          width: '100vw',
-          height: '100vh',
-          backgroundImage: 'linear-gradient(to bottom, #bfdbfe, #fecaca)'
-        }}
-      >
-        <motion.div
-          style={{
-            width: '100vw',
-            height: '100vh',
-            position: 'fixed',
-            backgroundColor: 'black',
-            borderRadius: '0 0 100px 100px',
-            zIndex: 40,
-          }}
+      <PageContainer key={pathName}>
+        <TransitionOverlay
           animate={{ height: "0vh" }}
           exit={{ height: "140vh" }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         />
-        <motion.div
-          style={{
-            position: 'fixed',
-            margin: 'auto',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            color: 'white',
-            fontSize: '8rem',
-            cursor: 'default',
-            zIndex: 50,
-            width: 'fit-content',
-            height: 'fit-content'
-          }}
+        <PathNameDisplay
           initial={{ opacity: 1 }}
           animate={{ opacity: 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           {pathName.substring(1)}
-        </motion.div>
-        <motion.div
-          style={{
-            width: '100vw',
-            height: '100vh',
-            position: 'fixed',
-            backgroundColor: 'black',
-            borderRadius: '100px 100px 0 0',
-            bottom: 0,
-            zIndex: 30,
-          }}
+        </PathNameDisplay>
+        <TransitionOverlay
           initial={{ height: "140vh" }}
           animate={{ height: "0vh", transition: { delay: 0.5 } }}
         />
-        <div style={{ height: '6rem' }}>
+        <NavbarContainer>
           <Navbar />
-        </div>
-        <div style={{ height: 'calc(100vh - 6rem)' }}>
+        </NavbarContainer>
+        <MainContent>
           {children}
-        </div>
-        <div style={{ height: '6rem' }}>
+        </MainContent>
+        <FooterContainer>
           <Footer />
-        </div>
-      </div>
+        </FooterContainer>
+      </PageContainer>
     </AnimatePresence>
   );
 };
 
 export default TransitionProvider;
+
+const PageContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+`;
+
+const TransitionOverlay = styled(motion.div)`
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: black;
+  z-index: 40;
+  border-radius: 0 0 100px 100px;
+
+  &:nth-child(3) {
+    border-radius: 100px 100px 0 0;
+    bottom: 0;
+    z-index: 30;
+  }
+`;
+
+const PathNameDisplay = styled(motion.div)`
+  position: fixed;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: white;
+  font-size: 8rem;
+  cursor: default;
+  z-index: 50;
+  width: fit-content;
+  height: fit-content;
+`;
+
+const NavbarContainer = styled.div`
+  height: 6rem;
+`;
+
+const MainContent = styled.div`
+  height: calc(100vh - 6rem);
+`;
+
+const FooterContainer = styled.div`
+  height: 6rem;
+`;

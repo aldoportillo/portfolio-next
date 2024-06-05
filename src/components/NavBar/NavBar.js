@@ -3,18 +3,27 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NavLink from '@/components/NavLink';
+import HomeIcon from '@/../public/save-icon.png';
+import ProjectsIcon from '@/../public/code-icon.png';
+import BlogIcon from '@/../public/blog-icon.png';
+import ContactIcon from '@/../public/search-icon.png';
 
 const links = [
-  { url: "/", title: "Home" },
-  { url: "/projects", title: "Projects" },
-  { url: "/blogs", title: "Blog" },
-  { url: "/contact", title: "Contact" },
+  { url: "/", title: "Home", icon: HomeIcon},
+  { url: "/projects", title: "Projects", icon: ProjectsIcon},
+  { url: "/blogs", title: "Blog", icon: BlogIcon},
+  { url: "/contact", title: "Contact", icon: ContactIcon}
 ];
+const getWindowSize = () => {
+  const { innerWidth } = window;
+  return innerWidth;
+}
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [windowSize, setWindowSize] = useState(getWindowSize());
 
   const topVariants = {
     closed: {
@@ -68,36 +77,50 @@ const Navbar = () => {
     },
   };
 
+  useEffect(() => {
+    function handleResize() {
+      setWindowSize(getWindowSize());
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   return (
     <NavContainer>
-      <LinksContainer>
-        {links.map((link) => (
-          <NavLink link={link} key={link.title} />
-        ))}
-      </LinksContainer>
+      
       <LogoContainer>
         <LogoLink href="/">
           <span>Aldo</span>
           <span className="logo-text">Portillo</span>
         </LogoLink>
       </LogoContainer>
-      <div>
+      
+      
+      {windowSize < 1025 ?
         <MenuButton onClick={() => setOpen((prev) => !prev)}>
           <MenuBar variants={topVariants} animate={open ? "opened" : "closed"} />
           <MenuBar variants={centerVariants} animate={open ? "opened" : "closed"} />
           <MenuBar variants={bottomVariants} animate={open ? "opened" : "closed"} />
         </MenuButton>
+        :
+        <LinksContainer>
+        {links.map((link) => (
+          <NavLink link={link} key={link.title} />
+        ))}
+      </LinksContainer>
+      }
         {open && (
           <MenuList variants={listVariants} initial="closed" animate="opened">
             {links.map((link) => (
               <MenuItem variants={listItemVariants} key={link.title}>
-                <Link href={link.url}>{link.title}</Link>
+                <NavLink link={link} key={link.title} />
               </MenuItem>
             ))}
           </MenuList>
         )}
-      </div>
     </NavContainer>
   );
 };
@@ -126,13 +149,9 @@ const LinksContainer = styled.div`
 `;
 
 const LogoContainer = styled.div`
-  display: none;
+  display: flex;
   width: 33.333%;
   justify-content: center;
-
-  @media (min-width: 1024px) {
-    display: flex;
-  }
 `;
 
 const LogoLink = styled(Link)`
@@ -162,7 +181,7 @@ const LogoLink = styled(Link)`
   }
 `;
 
-const MenuButton = styled.button`
+const MenuButton = styled.div`
   width: 2.5rem;
   height: 2rem;
   display: flex;
@@ -170,13 +189,15 @@ const MenuButton = styled.button`
   justify-content: space-between;
   position: relative;
   z-index: 50;
+  color: white;
 `;
 
 const MenuBar = styled(motion.div)`
   width: 2.5rem;
   height: 0.25rem;
-  background-color: black;
+  background-color: white;
   border-radius: 0.125rem;
+  
 `;
 
 const MenuList = styled(motion.div)`
