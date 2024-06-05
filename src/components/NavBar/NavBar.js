@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
-import NavLink from "../NavLink";
-import { motion } from "framer-motion";
+import Link from 'next/link';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import NavLink from '@/components/NavLink';
 
 const links = [
   { url: "/", title: "Home" },
@@ -13,8 +13,8 @@ const links = [
   { url: "/contact", title: "Contact" },
 ];
 
-const NavBar = () => {
-  const [open, setOpen] = useState(true);
+const Navbar = () => {
+  const [open, setOpen] = useState(false);
 
   const topVariants = {
     closed: {
@@ -68,77 +68,132 @@ const NavBar = () => {
     },
   };
 
+
   return (
-    <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'between', padding: '0 4px', fontSize: '1.25rem' }}>
-      {/* LINKS */}
-      <div style={{ display: 'block', flexDirection: 'row', gap: '16px', width: '33.333%' }}>
+    <NavContainer>
+      <LinksContainer>
         {links.map((link) => (
           <NavLink link={link} key={link.title} />
         ))}
-      </div>
-      {/* LOGO */}
-      <div style={{ display: 'none', width: '33.333%', justifyContent: 'center' }}>
-        <Link
-          href="/"
-          style={{ fontSize: '0.875rem', backgroundColor: 'black', borderRadius: '4px', padding: '4px', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        >
-          <span style={{ color: 'white', marginRight: '4px' }}>Lama</span>
-          <span style={{ width: '48px', height: '32px', borderRadius: '4px', backgroundColor: 'white', color: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            .dev
-          </span>
-        </Link>
-      </div>
-      {/* RESPONSIVE MENU */}
-      <div style={{ display: 'none' }}>
-        {/* MENU BUTTON */}
-        <button
-          style={{ width: '40px', height: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', zIndex: 50 }}
-          onClick={() => setOpen((prev) => !prev)}
-        >
-          <motion.div
-            variants={topVariants}
-            animate={open ? "opened" : "closed"}
-            style={{ width: '40px', height: '4px', backgroundColor: 'black', borderRadius: '2px' }}
-          ></motion.div>
-          <motion.div
-            variants={centerVariants}
-            animate={open ? "opened" : "closed"}
-            style={{ width: '40px', height: '4px', backgroundColor: 'black', borderRadius: '2px' }}
-          ></motion.div>
-          <motion.div
-            variants={bottomVariants}
-            animate={open ? "opened" : "closed"}
-            style={{ width: '40px', height: '4px', backgroundColor: 'black', borderRadius: '2px' }}
-          ></motion.div>
-        </button>
-        {/* MENU LIST */}
+      </LinksContainer>
+      <LogoContainer>
+        <LogoLink href="/">
+          <span>Aldo</span>
+          <span className="logo-text">Portillo</span>
+        </LogoLink>
+      </LogoContainer>
+      <div>
+        <MenuButton onClick={() => setOpen((prev) => !prev)}>
+          <MenuBar variants={topVariants} animate={open ? "opened" : "closed"} />
+          <MenuBar variants={centerVariants} animate={open ? "opened" : "closed"} />
+          <MenuBar variants={bottomVariants} animate={open ? "opened" : "closed"} />
+        </MenuButton>
         {open && (
-          <motion.div
-            variants={listVariants}
-            initial="closed"
-            animate="opened"
-            style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'black', color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '32px', fontSize: '2.25rem', zIndex: 40 }}
-          >
+          <MenuList variants={listVariants} initial="closed" animate="opened">
             {links.map((link) => (
-              <motion.div
-                variants={listItemVariants}
-                key={link.title}
-              >
+              <MenuItem variants={listItemVariants} key={link.title}>
                 <Link href={link.url}>{link.title}</Link>
-                <motion.div
-                variants={listItemVariants}
-                key={link.title}
-                style={{}}  // Inline styles for list items if needed
-              >
-                <Link href={link.url}>{link.title}</Link>
-              </motion.div>
-              </motion.div>
+              </MenuItem>
             ))}
-          </motion.div>
+          </MenuList>
         )}
       </div>
-    </div>
+    </NavContainer>
   );
-}
+};
 
-export default NavBar;
+export default Navbar;
+
+
+const NavContainer = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-size: 1.25rem;
+`;
+
+const LinksContainer = styled.div`
+  display: none;
+  flex-direction: row;
+  gap: 16px;
+  width: 33.333%;
+
+  @media (min-width: 768px) { 
+    display: flex;
+  }
+`;
+
+const LogoContainer = styled.div`
+  display: none;
+  width: 33.333%;
+  justify-content: center;
+
+  @media (min-width: 1024px) {
+    display: flex;
+  }
+`;
+
+const LogoLink = styled(Link)`
+  font-size: 0.875rem;
+  background-color: black;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    color: white;
+    margin-right: 0.25rem;
+  }
+
+  .logo-text {
+    width: 3rem;
+    height: 2rem;
+    border-radius: 0.25rem;
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const MenuButton = styled.button`
+  width: 2.5rem;
+  height: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  z-index: 50;
+`;
+
+const MenuBar = styled(motion.div)`
+  width: 2.5rem;
+  height: 0.25rem;
+  background-color: black;
+  border-radius: 0.125rem;
+`;
+
+const MenuList = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 2.25rem;
+  z-index: 40;
+`;
+
+const MenuItem = styled(motion.div)``;
