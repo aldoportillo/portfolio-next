@@ -1,7 +1,9 @@
+import LoadBalancer from '@/components/LoadBalancer';
+import { motion } from 'framer-motion';
 import React from 'react'
 
+
 export function generateMetadata({params}){
-    //Await Blog Name
     return {
         title: `${params.blog} | Aldo Portillo`,
         description: "A collection of blogs",
@@ -14,6 +16,8 @@ function Blog({ params }) {
   return (
     <div>
       <h2>Load Balancing Algorithms</h2>
+
+      <LoadBalancer />
 
       <h3>Static Load Balancing Algorithms</h3>
 
@@ -29,6 +33,11 @@ function Blog({ params }) {
         <li>Least Connections</li>
         <li>Least Response Time</li>
       </ul>
+
+      <h4>Round Robin</h4>
+
+      
+
     </div>
   )
 }
