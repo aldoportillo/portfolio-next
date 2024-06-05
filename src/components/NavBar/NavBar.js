@@ -88,27 +88,6 @@ const NavBar = () => {
           </span>
         </Link>
       </div>
-      {/* SOCIAL
-      <div style={{ display: 'block', flexDirection: 'row', gap: '16px', width: '33.333%' }}>
-        <Link href="/">
-          <Image src="/github.png" alt="" width={24} height={24} />
-        </Link>
-        <Link href="/">
-          <Image src="/dribbble.png" alt="" width={24} height={24} />
-        </Link>
-        <Link href="/">
-          <Image src="/instagram.png" alt="" width={24} height={24} />
-        </Link>
-        <Link href="/">
-          <Image src="/facebook.png" alt="" width={24} height={24} />
-        </Link>
-        <Link href="/">
-          <Image src="/pinterest.png" alt="" width={24} height={24} />
-        </Link>
-        <Link href="/">
-          <Image src="/linkedin.png" alt="" width={24} height={24} />
-        </Link>
-      </div> */}
       {/* RESPONSIVE MENU */}
       <div style={{ display: 'none' }}>
         {/* MENU BUTTON */}
