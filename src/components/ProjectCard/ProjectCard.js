@@ -1,5 +1,6 @@
 "use client";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 function ProjectCard({ project }) {
   return (
@@ -39,5 +40,10 @@ const ProjectDescription = styled.p`
   font-size: 1em;
   color: #ccc;
 `;
+
+ProjectCard.propTypes = {
+    project: PropTypes.object.isRequired
+};
+
 
 export default ProjectCard;

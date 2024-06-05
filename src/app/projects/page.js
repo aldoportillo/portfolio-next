@@ -1,6 +1,6 @@
-import ProjectCard from '@/components/ProjectCard';
-import ProjectWrapper from '@/components/ProjectWrapper';
+import ProjectCard from '@/components/ProjectCard'
 import React from 'react'
+import { PageTitle, ProjectsContainer, Wrapper } from '@/components/ProjectStyles'
 
 export const metadata = {
   title: "My Projects | Aldo Portillo",
@@ -47,14 +47,14 @@ const projectsData = [
 
 function Projects() {
   return (
-    <ProjectWrapper>
-      <h1>My Projects</h1>
-      <div>
+    <Wrapper>
+      <PageTitle>My Projects</PageTitle>
+      <ProjectsContainer>
         {projectsData.map(project => (
           <ProjectCard key={project.id} project={project} />
         ))}
-      </div>
-    </ProjectWrapper>
+      </ProjectsContainer>
+    </Wrapper>
   )
 }
 
