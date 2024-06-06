@@ -3,13 +3,13 @@ import path from 'path';
 import matter from 'gray-matter';
 
 export async function getBlogPostList() {
-  const fileNames = await readDirectory('/blogs');
+  const fileNames = await readDirectory('/public/blogs');
 
   const blogPosts = [];
 
   for (let fileName of fileNames) {
     const rawContent = await readFile(
-      `/blogs/${fileName}`
+      `/public/blogs/${fileName}`
     );
 
     const { data: frontmatter } = matter(rawContent);
@@ -27,7 +27,7 @@ export async function getBlogPostList() {
 
 export async function loadBlogPost(slug) {
   const rawContent = await readFile(
-    `/blogs/${slug}.mdx`
+    `/public/blogs/${slug}.mdx`
   );
 
   const { data: frontmatter, content } =
