@@ -13,7 +13,7 @@ async function Blogs() {
 
   const blogData = await getBlogPostList();
   const groupedByYear = blogData?.reduce((acc, blog) => {
-    const year = new Date(blog.published_timestamp).getFullYear();
+    const year = new Date(blog.published_at).getFullYear();
     if (!acc[year]) {
       acc[year] = [];
     }
@@ -37,7 +37,7 @@ async function Blogs() {
               >
                 <BlogTitle>{blog.title}</BlogTitle>
                 <PublishDate>
-                  {formatDate(blog.published_timestamp)}
+                  {formatDate(blog.published_at)}
                 </PublishDate>
               </StyledLink>
             ))}

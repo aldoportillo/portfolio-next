@@ -1,21 +1,21 @@
 .wrapper {
-    border-radius: 0px !important;
-    margin: 0px calc(var(--viewport-padding) * -1) 64px !important;
-    border: 1px solid var(--color-card-border);
+    border-radius: 5px !important;
+
+    font-size: 0.8rem;
+    
   }
   .wrapper pre {
-    padding: var(--viewport-padding) !important;
+    overflow: auto;
   }
   .wrapper code {
-    font-family: var(--font-family-mono);
+    padding: 20px ;
   }
   .wrapper code > div {
-    font-size: 1.125rem;
     padding: 0px !important;
   }
   
-  @media (min-width: 56rem) {
+  @media (min-width: 768px) {
     .wrapper {
-      border-radius: 8px !important;
+      font-size: 1.2rem; 
     }
   }
