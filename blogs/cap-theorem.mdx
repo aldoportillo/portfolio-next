@@ -1,0 +1,71 @@
+---
+title: "CAP Theorem"
+slug: "cap-theorem"
+published_at: "2023-11-11T14:52:46Z"
+interacive: false
+tag_list: ["systemdesign", "database", "mongodb", "distributedsystems"]
+---
+
+Theorem: Distributed systems can only guarantee 2 out of 3: CAP.
+
+## Acronym
+
+C - Consistency - If two requests are made from different sources against different "nodes" off the distributed store, you will get the same data returned.
+A - Availability - If two requests are made from different sources against different "nodes" off the distributed store, you will get a response.
+P - Partition Tolerance - If nodes are disconnected, the system will continue to work. Assumed as constant in distributed systems.
+
+## DB Types
+
+### CA Database - Consistent and Available
+
+Not partition tolerant.
+
+Databases - SQL: PostgreSQL and MySQL.
+
+### AP Database - Available and Partition Tolerant
+
+Access to the same dataset but no guarantee every request will receive the same response.
+
+Databases - NoSQL: Mongo and HBase
+
+### CP Database - Consistent and Partition Tolerant
+
+Guaranteed that every request receives the same response.
+
+Databases: Spanner, Dynamo, Cosmos and Cockroach
+
+## Implementing Consistency
+
+Foundations: Raft and MVCC
+
+### Raft
+
+Distributed Consensus Algorithm provides atomic writes and consistent reads.
+
+#### **Raft Leader**
+
+- Leader is elected
+- Coordinates all writes, proposes commands to followers
+- Only allowed to serve authoritative up-to-date
+
+#### **Atomic Writes(Replication)**
+
+Commands are proposed to the Raft Leader replica and distributed to followers but only accepted when a quorum of followers have acknowledged receiving it. This helps with consistency.
+
+### Multiversion concurrency control - MVCC
+
+Ensures consistent data is always present without any overlap for transactions.
+
+## Applying CAP in real world for comprehension
+
+### Bank
+
+Two ATMs support 3 operations: withdraw, deposit and check balance. These ATMs don't have a central database.
+
+Prioritizing Consistency - The ATM may refuse to accept deposits or withdraws when there is a partition. This leads to a sad customer.
+
+Prioritizing Availability - The customer can withdraw the full balance from both ATMs when there is a partition. This leads to a negative balance.
+
+## Conclusion
+
+This is just a high level overview on the CAP theorem. The world is more complex than this. CAP theorem assumes there is a partition, but if there isn't, we also have latency vs consistency in the PACELC theorem.

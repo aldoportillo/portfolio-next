@@ -1,0 +1,177 @@
+---
+title: "Containerization and Data Storage - Week 1: New NOTR Server"
+slug: "week-1-new-notr-server-containerization-and-data-storage"
+published_at: "2024-04-24T04:11:10Z"
+interactive: false
+tag_list: ["sql", "docker", "aws", "postgres"]
+---
+
+## Introduction
+Last week, I embarked on a journey to rebuild the Neat on the Rocks (NOTR) server using a MERN stack with an additional PostgreSQL database. This week, I've made substantial progress in containerizing the application, dealing with ORM issues, and implementing secure data storage solutions. In this post, I'll share the details of my journey and some key learnings that might help others tackling similar challenges.
+
+## Containerizing the Application
+Containerization is a crucial step for ensuring that our application runs consistently across different environments. I started by creating a `Dockerfile` and a `docker-compose.js` file to manage the multi-container setup. Here's a brief look at what these files entail:
+
+### Dockerfile
+```Dockerfile
+# Use the official Node.js 16 as a base image
+FROM node:16
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Install netcat (nc), useful for checking port availability
+RUN apt-get update && apt-get install -y netcat postgresql-client
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy your application source code including the entrypoint script
+COPY . .
+
+# Ensure the entrypoint script is executable
+RUN chmod +x ./entrypoint.sh
+
+# Expose port 5000 for the application
+EXPOSE 5000
+
+# Use the entrypoint script to start the service
+CMD ["./entrypoint.sh"]
+```
+
+### Docker Compose
+
+```js
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+  app:
+    image: notr-server
+    ports:
+      - "8000:5000"
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}
+    command: ["/usr/src/app/entrypoint.sh"]
+```
+
+The entry-point.sh script ensures that our database is ready before the web server starts, avoiding any startup issues.
+
+I made tutorial on Github. Follow the [README](https://github.com/aldoportillo/containerizing-express-app) to containerize your first express application.
+
+## Transitioning from ORM to SQL Queries
+
+Due to issues with the Sequelize ORM in a containerized environment, I decided to rewrite my models as classes with methods directly executing SQL queries. This approach provided more control and reduced unexpected behaviors.
+
+### Example Model Class
+
+```js
+
+const pool = require('../db');
+
+class Spirit {
+    static async findAll() {
+        const query = 'SELECT * FROM Spirits;';
+        try {
+            const result = await pool.query(query);
+            return result.rows;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    static async findById(id) {
+        const query = 'SELECT * FROM Spirits WHERE id = $1;';
+        try {
+            const result = await pool.query(query, [id]);
+            return result.rows[0];
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    static async create(data) {
+        const { id, name, abv, sugarConcentration, acid, calories, ethanol, fat, carb, sugar, addedSugar, protein, spiritCategoryId } = data;
+        const query = `INSERT INTO Spirits (id, name, abv, sugarConcentration, acid, calories, ethanol, fat, carb, sugar, addedSugar, protein, spirit_category_id)
+                       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+                       RETURNING *;`;
+        const values = [id, name, abv, sugarConcentration, acid, calories, ethanol, fat, carb, sugar, addedSugar, protein, spiritCategoryId];
+        try {
+            const result = await pool.query(query, values);
+            return result.rows[0];
+        } catch (err) {
+            throw err;
+        }
+    }
+
+}
+
+module.exports = Spirit;
+
+```
+
+## Implementing AWS S3 for Secure Data Storage
+
+Storing structured data securely is paramount. I implemented AWS S3 buckets to store some of the structured data from MongoDB before moving to PostgreSQL. Here's how I integrated S3 with my Node.js application:
+
+```js
+const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+const csv = require('csv-parser');
+const { finished } = require('stream/promises');
+const dotenv = require('dotenv').config();
+
+// AWS SDK Configuration
+const s3Client = new S3Client({
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+  region: process.env.AWS_REGION
+});
+
+async function downloadAndParseCSV(fileName) {
+  const params = {
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Key: fileName
+  };
+
+  try {
+    const command = new GetObjectCommand(params);
+    const url = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+    const fetch = (await import('node-fetch')).default; // Doing this since node-fetch is an ESM module
+    const response = await fetch(url);
+    const stream = response.body.pipe(csv());
+    const data = [];
+    stream.on('data', (row) => data.push(row));
+    await finished(stream);
+    return data;
+  } catch (err) {
+    console.error(`Error downloading or parsing ${fileName} from S3:`, err);
+    throw err;
+  }
+}
+
+module.exports = { downloadAndParseCSV };
+
+```
+
+## Conclusion
+
+This week was filled with challenges and learning opportunities as I continued to rebuild the NOTR server. The move to containerization, direct SQL management, and implementing AWS S3 has set a solid foundation for future development. Stay tuned for more updates as I begin implementing Users backed by MongoDB!

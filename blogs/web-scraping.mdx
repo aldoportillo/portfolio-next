@@ -1,0 +1,102 @@
+---
+title: "Web Scraping"
+slug: "web-scraping"
+tag_list: ["ruby", "web-scraping", "http", "database"]
+interactive: false
+published_at: "2023-10-27T20:15:31Z"
+---
+
+I am currently working on a Ruby on Rails project that allows MMA promoters to create events and MMA fighters to find matches. In order to see the entire workflow of the app, I need some data; however, I wanted the data to be similar to the data I will require for the user. Fortunately, the UFC exists and their website has images, names, reach, weights, and heights. Unfortunately, the UFC does not offer an API for this data. So I had to web scrape it. Below is the code I wrote to scrape the fighters data using a csv of their slugs.
+
+
+
+## Tools
+
+1. [http](https://github.com/httprb/http)
+2. [Nokogiri](https://github.com/sparklemotion/nokogiri)
+3. [CSV](https://ruby-doc.org/stdlib-2.6.1/libdoc/csv/rdoc/CSV.html)
+4. [Selector Gadget](https://selectorgadget.com/)
+5. [Google Dorking Cheat Sheet](https://gist.github.com/ikuamike/c2611b171d64b823c1c1956129cbc055)
+
+## Steps
+
+1. Iterate through the slugs in the CSV in lib/sample_data/athletes_slugs.csv
+2. Make a http request to "https://www.ufc.com/athlete/#{slug}"
+3. Parse the request using Nokogiri to get the document
+4. Scrape data you need using classes
+5. Save them in CSV if they don't exist
+
+## Code
+
+```ruby
+#In lib/tasks/scrape.rake
+
+desc "Scrape Athlete Metric Data"
+task({ :scrape_athlete_metrics => :environment }) do
+
+  #STEP 1: Get the slugs from CSV
+  slugs = CSV.read('lib/sample_data/athletes.csv').map { |row| row.at(1) }
+
+  #STEP 2: Make a request to the URL with each slug
+  raw_responses = slugs.map { |slug| HTTP.get("https://www.ufc.com/athlete/#{slug}") }
+
+  #STEP 3: Parse the request using Nokogiri
+  documents = raw_responses.map { |response| Nokogiri::HTML(response.to_s) }
+
+  #STEP 4: Scrape Data
+  fighters_data = documents.map do |doc|
+    image_element = doc.at('img.hero-profile__image')
+    image_src = image_element ? image_element.attr('src') : nil
+
+    {
+      :name => doc.css('.hero-profile__name').text.strip,
+      :image_src => image_src,
+      :age => doc.at('div:contains("Age") > .c-bio__text')&.text&.strip,
+      :reach => doc.at('div:contains("Reach") > .c-bio__text')&.text&.strip,
+      :height => doc.at('div:contains("Height") > .c-bio__text')&.text&.strip,
+      :weight => doc.at('div:contains("Weight") > .c-bio__text')&.text&.strip,
+    }
+  end
+  
+  # STEP 5: Save in CSV
+  CSV.open('lib/sample_data/athletes_metrics.csv', 'a+') do |csv|
+    existing = csv.entries
+    fighters_data.each do |fighter|
+      unless existing.include?([fighter[:name], fighter[:image_src], fighter[:age], fighter[:reach], fighter[:height], fighter[:weight]])
+        csv << [fighter[:name], fighter[:image_src], fighter[:age], fighter[:reach], fighter[:height], fighter[:weight]]
+      end
+    end
+  end
+
+```
+
+## Roadblocks
+
+I faced two roadblocks when scraping data. The first one is something I noticed when writing the code above which I was able to work around. The other roadblock there is no workaround using Nokogiri.
+
+1. Non specific class names:
+    When trying to get the height, weight, reach and age of the fighters, I noticed they had non descriptive class names. They all had the same class name:
+
+    ```html
+    <div class="c-bio__field">
+        <div class="c-bio__label">Height</div>
+        <div class="c-bio__text">65.00</div>
+    </div>
+    ```
+
+    Luckily since the div that displays the text height is in the same div as the div that displays the integer. We can select them as:
+
+    ```ruby
+    :height => doc.at('div:contains("Height") > .c-bio__text')&.text&.strip,
+    ```
+
+    This selects the parent div that contains "height" and gets the child div containing the integer.
+
+2. Javascript rendering html: 
+    This is an issue I was unable to resolve directly. I was trying to get the names and locations of venues across america by web scraping since there was no free API. I found a great page with all the data I needed, so I wrote the best web scraper the world has ever seen and it failed. I opened the chrome debugger and realized the elements weren't initially loaded. Nokogiri only grabs the html before any javascript is ran. 
+
+    After many different approaches, I decided to throw in the towel. Well at this point I should just delete the repository and start a different project. Wrong. Thank god for google dorking. 
+
+    I had to understand that all the data I was getting from the scraper was stored in a csv. Well what if a csv with the data already exists somewhere on the world wide web? Time to google dork. 
+
+    I searched **venues filetype:pdf** on google and after some searching I found a CSV containing latitude, longitude, address and name. Exactly what I was hoping to web scrape.

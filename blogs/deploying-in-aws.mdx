@@ -1,0 +1,56 @@
+---
+title: "Deploying in AWS - Week 3/4: New NOTR Server"
+slug: "deploying-in-aws-week-34-new-notr-server"
+published_at: "2024-05-15T23:26:49Z"
+interactive: false
+tag_list: ["aws", "docker", "devops", "cloud"]
+---
+
+## Introduction
+
+After two weeks of intensive learning and applying, I successfully deployed my server for Neat on the Rocks onto AWS. This journey involved learning and utilizing various AWS services, including ECS, EC2, ECR, IAM, RDS, and security groups. In this blog post, I'll walk you through the steps I took, the challenges I faced, and the solutions I found.
+
+## AWS Services Overview
+
+Before diving into the steps, here's a brief overview of the AWS services I used:
+
+- **ECS (Elastic Container Service)**: Manages and deploys Docker containers.
+- **EC2 (Elastic Compute Cloud)**: Provides scalable computing capacity.
+- **ECR (Elastic Container Registry)**: Stores and manages Docker container images.
+- **IAM (Identity and Access Management)**: Manages access to AWS services and resources.
+- **RDS (Relational Database Service)**: Manages relational databases in the cloud.
+- **Security Groups**: Controls inbound and outbound traffic to AWS resources.
+
+## Steps to Deploy the NOTR Server
+
+### Step 1: Setting Up the Docker Environment
+
+First, I ensured that my application was containerized using Docker. I created a `Dockerfile` to define the environment and instructions for building the Docker image.
+
+The code for this is available in my previous blog post where I containerized the application. The main difference is that I removed the creation for the Postgres image since we used AWS RDS.
+
+### Step 2: Pushing the Docker Image to ECR
+
+When you open up AWS ECR, you can create a new container repository and get instructions on how to push. You need to have the Docker Daemon and AWS CLI installed.
+
+### Step 3: Setting Up ECS
+
+I configured ECS to manage and deploy the Docker container. This involved creating a task definition and an ECS service.
+
+The task definitions is where I defined my port routing and environment variables.
+
+I created an ECS service to run and manage my tasks. This involved setting up a cluster, creating the service, and configuring the load balancer to route traffic to my tasks.
+
+### Step 4: Configuring Security Groups
+
+I set up security groups to further secure my server to only allow certain IPs to access certain things. This was a difficult task since every AWS service has its own IP; I had to track them all.
+
+### Step 5: Setting Up RDS
+
+I used Amazon RDS to manage my PostgreSQL database. This involved creating an RDS instance, setting up the database, and configuring my application to connect to it.
+
+Step 6: IAM Roles and Policies
+I created IAM roles and policies to manage access to AWS resources. This included roles for ECS tasks to access ECR, S3, and RDS.
+
+## Conclusion
+Deploying Neat on the Rocks onto AWS was a challenging but rewarding experience. I gained valuable insights into using ECS, EC2, ECR, IAM, RDS, and security groups. By carefully configuring each component and troubleshooting issues as they arose, I successfully deployed my server and made it accessible on the internet.

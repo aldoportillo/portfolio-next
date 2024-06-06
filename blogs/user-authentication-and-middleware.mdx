@@ -1,0 +1,114 @@
+---
+title: "User Authentication and Middleware - Week 2: New NOTR Server"
+slug: "week-2-new-notr-server-user-authentication-and-middleware-1ai0"
+published_at: "2024-05-01T03:36:30Z"
+interactive: false
+tag_list: ["middleware", "express", "authjs", "mongodb"]
+---
+
+Welcome back to our journey through the server-side development of Neat on the Rocks (NOTR). This week was all about establishing a solid foundation for managing user interactions through MongoDB and setting up robust authentication mechanisms.
+
+## Connecting to MongoDB
+
+Our first task was to integrate MongoDB, a database choice driven by its flexibility and capability to handle complex data structures efficiently. Using Mongoose, we streamlined the process of schema validation and business logic implementation.
+
+## Crafting the UserModel 
+
+```javascript
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+
+const User = new mongoose.Schema({
+    email: { type: String, required: true, unique: true, select: false},
+    password: { type: String, required: true, select: false},
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
+    height: { type: Number, required: true },
+    weight: { type: Number, required: true },
+    dob: { type: Date, required: true },
+    sex: { type: String, required: true },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    photoUrl: { type: String, required: false },
+    admin: { type: Boolean, required: false, default: false, immutable: true, select: false }
+});
+
+User.pre('save', async function(next) {
+    if (!this.isModified('password')) return next();
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (error) {
+        next(error);
+    }
+});
+
+
+User.methods.comparePassword = async function(candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
+};
+
+
+const UserModel = mongoose.model('User', User);
+
+module.exports = UserModel;
+```
+
+### User Methods:
+
+The UserModel includes methods such as comparePassword, which facilitates secure password verification during login. These methods enhance the security and functionality of our user management system.
+
+## Implementing Middleware for Security
+
+Security is paramount, so we fortified our application with essential middleware:
+
+### Authentication Middleware (authJWT): Validates user sessions, ensuring that each request is authenticated.
+
+### Admin Field Stripping Middleware (stripAdminField): Prevents unauthorized manipulation of the admin field, safeguarding against potential vulnerabilities.
+
+### Authorization Middleware (verifyAdmin): Prevents any user that isn't an admin to access certain routes
+
+## Setting Up User Authentication
+
+```javascript
+const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await UserModel.findOne({ email });
+        if (!user || !(await user.comparePassword(password))) {
+            return res.status(401).send('Authentication failed');
+        }
+        const token = generateAuthToken(user);
+        res.send({ user, token });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+}
+```
+
+## Adding and Removing Friends
+
+We added functionality to manage social interactions, such as sending friend requests and accepting or rejecting them. This enhances the social aspect of NOTR, allowing users to connect with each other within the application. Here is an example of a friend request.
+
+```js
+const sendFriendRequest = async (req, res) => {
+    const { userId, friendId } = req.body;
+    const recipient = await UserModel.findById(friendId);
+    if (!recipient) {
+        return res.status(404).send('User not found');
+    }
+    
+    if (recipient.friendRequests.includes(userId) || recipient.friends.includes(userId)) {
+        return res.status(400).send('Request already sent or they are already friends');
+    }
+    recipient.friendRequests.push(userId);
+    await recipient.save();
+    res.send('Friend request sent');
+}
+```
+
+## Conclusion
+
+This week was packed with creating the MVP for the social media aspect of the server. This feature is why I am recreating the server with more knowledge that I had 4 years ago. I am glad to get it working and look forward to testing my endpoints in the client. 

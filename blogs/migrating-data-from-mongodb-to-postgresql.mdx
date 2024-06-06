@@ -1,0 +1,113 @@
+---
+title: "Migrating Data from MongoDB to PostgreSQL - Week 0: New NOTR Server"
+slug: "week-0-new-notr-server-migrating-data-from-mongodb-to-postgresql"
+published_at: "2024-04-15T18:19:37Z"
+interactive: false
+tag_list: ["postgres", "node", "mongodb", "mern"]
+---
+
+## Introduction
+In week 0 of modifying my server for [Neat on the Rocks](https://www.neatonthe.rocks/), I focused on transferring part of my data from MongoDB (a non-relational database) to PostgreSQL (a relational database). This migration is critical as I aim to use SQL's robust querying capabilities for complex searches in my cocktail database, while maintaining a non-relational database for the social media features of the app.
+
+## Creating Models
+I started by setting up Sequelize models for PostgreSQL. This was essential to ensure data integrity and establish relationships that are crucial for the relational database part of my stack. Here’s how I defined the `Cocktail` model:
+
+```javascript
+
+const { Model, DataTypes } = require('sequelize');
+
+module.exports = (sequelize, DataTypes) => {
+    class Cocktail extends Model {}
+
+    Cocktail.init({
+        name: DataTypes.STRING,
+        description: DataTypes.STRING,
+        glasswareId: DataTypes.INTEGER,
+        imageUrl: DataTypes.STRING,
+        techniqueId: DataTypes.INTEGER,
+        garnishId: DataTypes.INTEGER
+    }, {
+        sequelize,
+        modelName: 'Cocktail'
+    });
+
+    Cocktail.associate = models => {
+        Cocktail.belongsTo(models.Glassware, { foreignKey: 'glasswareId' });
+        Cocktail.belongsTo(models.Technique, { foreignKey: 'techniqueId' });
+        Cocktail.belongsTo(models.Garnish, { foreignKey: 'garnishId' });
+    };
+
+    return Cocktail;
+};
+
+```
+
+## Aggregation Pipeline 
+
+Due to the unstructured format of my MongoDB data, I had to prepare it for a relational database, so I used a MongoDB aggregation pipeline to create rows for my data. 
+
+```js
+db.cocktails.aggregate([
+  { $unwind: "$specs" },
+  { $project: {
+    id: "$_id",
+    cocktailName: "$name",
+    spirit: "$specs.spirit",
+    ounces: {
+      $cond: {
+        if: { $ifNull: ["$specs.ounces", false] },
+        then: "$specs.ounces",
+        else: "N/A"
+      }
+    }
+  }}
+]);
+
+```
+
+This allowed me to take multiple cocktails structured like this:
+
+```json 
+{
+  "_id": {
+    "$oid": "1"
+  },
+  "name": "Old Fashioned",
+  "image": {
+    "filePath": "https://images.unsplash.com/photo-1470337458703-46ad1756a187?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80"
+  },
+  "specs": [
+    {
+      "spirit": "Bourbon (80 proof)",
+      "ounces": 2
+    },
+    {
+      "spirit": "Simple syrup (1:1)",
+      "ounces": 0.5
+    },
+    {
+      "spirit": "Angostura bitters",
+      "dashes": 2
+    }
+  ],
+  "instructions": [
+    "Fill the mixing glass with ice cubes.",
+    "Pour in the cocktail ingredients.",
+    "Stir for 30 seconds",
+    "Use a strainer to pour into a glass.",
+    "Add garnishes and Enjoy!"
+  ],
+  "description": "Indulge in the distinguished charm of an Old Fashioned cocktail. Crafted with the utmost reverence for tradition, this timeless concoction marries the deep notes of whiskey with the delicate sweetness of muddled sugar. Aromatic bitters add a touch of complexity, while a citrus twist imparts a subtle brightness. Served over a single large ice cube, the Old Fashioned beckons with sophistication. Garnished with an orange twist or a maraschino cherry, it stands as an ode to the classic art of mixology.",
+  "method": "Stirred",
+  "garnish": "Orange Peel",
+  "type": "cocktail",
+  "glass": "Rocks",
+  "__v": 0
+}
+```
+
+And extract the specs of each cocktail so that each index of the spec array of every cocktail becomes a column in my specs table. 
+
+## Conclusion
+
+After learning system design, this is something I have been wanting to implement for a while, but I was hesitant to transfer from a non-relational DB to a relational DB in Node. It wasn't too bad. I will still leverage the perks of a non-relational DB in the project for the social media aspect. 
