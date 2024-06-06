@@ -1,7 +1,7 @@
 import React from 'react'
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { loadBlogPost } from '@/helpers/file-helpers';
-import CodeBlock from '@/components/CodeBlock';
+import COMPONENT_MAP from '@/helpers/mdx-components';
 
 export async function generateMetadata({ params }) {
   const { frontmatter } = await loadBlogPost(
@@ -26,9 +26,7 @@ async function Blog({ params }) {
       <div >
       <MDXRemote
           source={content}
-          components={{
-            pre: CodeBlock,
-          }}
+          components={COMPONENT_MAP}
         />
       </div>
     </article>

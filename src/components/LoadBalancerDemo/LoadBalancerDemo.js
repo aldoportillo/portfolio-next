@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import { FaServer } from 'react-icons/fa';
 import { GiServerRack } from "react-icons/gi";
 import styled from 'styled-components';
-function LoadBalancerAnimation() {
+
+function LoadBalancerDemo() {
   const [strategy, setStrategy] = useState("weightRoundRobin");
   const [requestNumber, setRequestNumber] = useState(0);
   const requestCounter = useRef(0);
@@ -141,7 +142,7 @@ function LoadBalancerAnimation() {
 }
 
 
-export default LoadBalancerAnimation;
+export default LoadBalancerDemo;
 
 const Button = styled.button`
   background-color: #333;
