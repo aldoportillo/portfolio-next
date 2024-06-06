@@ -6,6 +6,7 @@ import Footer from "../Footer";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import styled from "styled-components";
+import Link from "next/link";
 
 const TransitionProvider = ({ children }) => {
   const pathName = usePathname();
@@ -30,15 +31,17 @@ const TransitionProvider = ({ children }) => {
           initial={{ height: "140vh" }}
           animate={{ height: "0vh", transition: { delay: 0.5 } }}
         />
-        <NavbarContainer>
+        <Header>
+          <LogoContainer>
+            <LogoLink href="/">
+              <span>Aldo</span>
+              <span className="logo-text">Portillo</span>
+            </LogoLink>
+          </LogoContainer>
           <Navbar />
-        </NavbarContainer>
-        <MainContent>
-          {children}
-        </MainContent>
-        <FooterContainer>
-          <Footer />
-        </FooterContainer>
+        </Header>
+        <MainContent>{children}</MainContent>
+        <Footer />
       </PageContainer>
     </AnimatePresence>
   );
@@ -46,9 +49,23 @@ const TransitionProvider = ({ children }) => {
 
 export default TransitionProvider;
 
+const Header = styled.header`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: var(--header);
+  justify-content: space-between;
+  max-width: 1200px;
+`;
+
 const PageContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  overflow-x: hidden;
 `;
 
 const TransitionOverlay = styled(motion.div)`
@@ -81,14 +98,48 @@ const PathNameDisplay = styled(motion.div)`
   height: fit-content;
 `;
 
-const NavbarContainer = styled.div`
-  height: 6rem;
+const MainContent = styled.main`
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  justify-content: center;
+  width: 100%;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    padding: 0;
+  }
 `;
 
-const MainContent = styled.div`
-  height: calc(100vh - 6rem);
+const LogoLink = styled(Link)`
+  font-size: 2rem;
+  background-color: black;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    color: white;
+    margin-right: 0.25rem;
+  }
+
+  .logo-text {
+    width: 7rem;
+    height: 2rem;
+    border-radius: 0.25rem;
+    background-color: #5eddac;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
-const FooterContainer = styled.div`
-  height: 6rem;
+const LogoContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;

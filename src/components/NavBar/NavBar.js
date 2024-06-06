@@ -81,7 +81,7 @@ const Navbar = () => {
   useEffect(() => {
     setWindowSize(getWindowSize())
   }, [])
-  
+
   useEffect(() => {
     function handleResize() {
       setWindowSize(getWindowSize());
@@ -95,13 +95,6 @@ const Navbar = () => {
 
   return (
     <NavContainer>
-      
-      <LogoContainer>
-        <LogoLink href="/">
-          <span>Aldo</span>
-          <span className="logo-text">Portillo</span>
-        </LogoLink>
-      </LogoContainer>
       
       
       {windowSize < 1025 ?
@@ -133,6 +126,7 @@ const Navbar = () => {
 export default Navbar;
 
 
+
 const NavContainer = styled.div`
   height: 100%;
   display: flex;
@@ -146,45 +140,13 @@ const LinksContainer = styled.div`
   display: none;
   flex-direction: row;
   gap: 16px;
-  width: 33.333%;
+  width: auto;
 
   @media (min-width: 768px) { 
     display: flex;
   }
 `;
 
-const LogoContainer = styled.div`
-  display: flex;
-  width: 33.333%;
-  justify-content: center;
-`;
-
-const LogoLink = styled(Link)`
-  font-size: 0.875rem;
-  background-color: black;
-  border-radius: 0.25rem;
-  padding: 0.25rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  span {
-    color: white;
-    margin-right: 0.25rem;
-  }
-
-  .logo-text {
-    width: 3rem;
-    height: 2rem;
-    border-radius: 0.25rem;
-    background-color: white;
-    color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`;
 
 const MenuButton = styled.div`
   width: 2.5rem;

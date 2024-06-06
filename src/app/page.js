@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Wrapper, Header, Subheader, Highlight, Inline, Bio, AboutMeSection } from "../components/HomeStyles";
+import { Wrapper, Header, Subheader, Highlight, Inline, Bio, AboutMeSection } from "../components/HomeStyles/HomeStyles";
 import Typing from "/public/typing.gif";
 import Image from "next/image";
 

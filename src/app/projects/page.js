@@ -1,6 +1,6 @@
 import ProjectCard from '@/components/ProjectCard'
 import React from 'react'
-import { PageTitle, ProjectsContainer, Wrapper } from '@/components/ProjectStyles'
+import { PageTitle, ProjectsContainer, Wrapper } from '@/components/ProjectStyles/ProjectStyles'
 
 export const metadata = {
   title: "My Projects | Aldo Portillo",
