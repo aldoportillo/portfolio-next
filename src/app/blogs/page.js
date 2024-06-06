@@ -1,18 +1,61 @@
-import React from 'react'
-
+import React from "react";
+import { BlogPage, PageTitle, YearTitle, StyledLink, BlogTitle, PublishDate, Divider } from "@/styles/BlogStyles";
+import { getBlogPostList } from "@/helpers/file-helpers";
 
 export const metadata = {
-    title: "My Blogs | Aldo Portillo",
-    description: "A collection of blogs",
-    image: "../../public/save-icon.png",
-    favicon: "../../public/save-icon.png",
-    
-    };
+  title: "My Blogs | Aldo Portillo",
+  description: "A collection of blogs",
+  image: "../../public/save-icon.png",
+  favicon: "../../public/save-icon.png",
+};
 
-function Blogs() {
+async function Blogs() {
+
+  const blogData = await getBlogPostList();
+  const groupedByYear = blogData?.reduce((acc, blog) => {
+    const year = new Date(blog.published_timestamp).getFullYear();
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(blog);
+    return acc;
+  }, {});
+
   return (
-    <div>Blogs</div>
-  )
+    <BlogPage>
+      <PageTitle>Blogs</PageTitle>
+      {Object.keys(groupedByYear)
+        .sort((a, b) => b - a)
+        .map((year) => (
+          <React.Fragment key={year}>
+            <YearTitle>{year}</YearTitle>
+            {groupedByYear[year].map((blog) => (
+              <StyledLink
+                key={blog.slug}
+                href={`/blogs/${blog.slug}`}
+                state={{ from: "blog", data: blog }}
+              >
+                <BlogTitle>{blog.title}</BlogTitle>
+                <PublishDate>
+                  {formatDate(blog.published_timestamp)}
+                </PublishDate>
+              </StyledLink>
+            ))}
+            <Divider />
+          </React.Fragment>
+        ))}
+    </BlogPage>
+  );
 }
 
-export default Blogs
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const now = new Date();
+  const options = { month: "long", day: "numeric" };
+  if (date.getFullYear() !== now.getFullYear()) {
+    options.year = "numeric";
+  }
+  return date.toLocaleDateString("en-US", options);
+}
+
+export default Blogs;

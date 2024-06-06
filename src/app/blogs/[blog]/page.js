@@ -1,44 +1,37 @@
-import LoadBalancer from '@/components/LoadBalancer';
-import { motion } from 'framer-motion';
 import React from 'react'
+import { MDXRemote } from 'next-mdx-remote/rsc';
+import { loadBlogPost } from '@/helpers/file-helpers';
+import CodeBlock from '@/components/CodeBlock';
 
+export async function generateMetadata({ params }) {
+  const { frontmatter } = await loadBlogPost(
+    params.blog
+  );
 
-export function generateMetadata({params}){
-    return {
-        title: `${params.blog} | Aldo Portillo`,
-        description: "A collection of blogs",
-        image: "../../public/save-icon.png",
-        favicon: "../../public/save-icon.png",
-        };
+  return {
+    title: `${frontmatter.title} | Aldo Portillo`,
+  };
 }
-function Blog({ params }) {
-    console.log(params)
+
+async function Blog({ params }) {
+
+  const { frontmatter, content } = await loadBlogPost(params.blog);
+
   return (
-    <div>
-      <h2>Load Balancing Algorithms</h2>
-
-      <LoadBalancer />
-
-      <h3>Static Load Balancing Algorithms</h3>
-
-      <ul>
-        <li>Round Robin</li>
-        <li>Weighted Round-Robin</li>
-        <li>Source IP Hash</li>
-      </ul>
-
-      <h3>Dynamic Load Balancing Algorithms</h3>
-
-      <ul>
-        <li>Least Connections</li>
-        <li>Least Response Time</li>
-      </ul>
-
-      <h4>Round Robin</h4>
-
-      
-
-    </div>
+    <article>
+      <div>
+      {frontmatter.title}
+      {frontmatter.publishedOn}
+      </div>
+      <div >
+      <MDXRemote
+          source={content}
+          components={{
+            pre: CodeBlock,
+          }}
+        />
+      </div>
+    </article>
   )
 }
 

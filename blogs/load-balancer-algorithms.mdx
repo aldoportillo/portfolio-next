@@ -6,3 +6,36 @@ interactive: true
 published_at: today
 ---
 
+# Load Balancer Algorithms
+
+## Introduction
+
+Load balancers are used to distribute incoming network traffic across multiple servers. This is done to ensure that no single server is overwhelmed with requests. Load balancers can be implemented in software or hardware and can be used to distribute traffic across multiple servers, data centers, or even cloud providers.
+
+## Static Load Balancing
+
+Static load balancing algorithms distribute traffic evenly across a set of servers. These algorithms do not take into account the current load on each server and are not able to adapt to changes in traffic patterns.
+
+### Round Robin
+
+Round Robin is one of the simplest load balancing algorithms. It distributes incoming requests to a group of servers in a circular order. Each server is assigned a request in turn, and the cycle repeats.
+
+### Weighted Round Robin
+
+Weighted Round Robin is an extension of the Round Robin algorithm that assigns a weight to each server. Servers with higher weights receive more requests than servers with lower weights.
+
+### Hashed Load Balancing
+
+Hashed Load Balancing uses a hash function to map incoming requests to a specific server. This ensures that requests for the same resource are always directed to the same server.
+
+## Dynamic Load Balancing
+
+Dynamic load balancing algorithms take into account the current load on each server and adjust the distribution of traffic accordingly. These algorithms can adapt to changes in traffic patterns and server availability.
+
+### Least Connections
+
+Least Connections is a dynamic load balancing algorithm that directs incoming requests to the server with the fewest active connections. This helps distribute traffic evenly across servers and prevents any single server from becoming overloaded.
+
+### Least Response Time
+
+Least Response Time is a dynamic load balancing algorithm that directs incoming requests to the server with the fastest response time. This helps improve the overall performance of the system by reducing latency for clients.
