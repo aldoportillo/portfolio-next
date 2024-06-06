@@ -56,6 +56,7 @@ const Header = styled.header`
   background-color: var(--header);
   justify-content: space-between;
   max-width: 1200px;
+  padding: 2vh 0px;
 `;
 
 const PageContainer = styled.div`
@@ -72,7 +73,7 @@ const TransitionOverlay = styled(motion.div)`
   width: 100vw;
   height: 100vh;
   position: fixed;
-  background-color: black;
+  background-color: #121212;
   z-index: 40;
   border-radius: 0 0 100px 100px;
 
@@ -105,6 +106,7 @@ const MainContent = styled.main`
   justify-content: center;
   width: 100%;
   flex: 1;
+  
 
   @media (max-width: 768px) {
     width: 100vw;
@@ -114,7 +116,7 @@ const MainContent = styled.main`
 
 const LogoLink = styled(Link)`
   font-size: 2rem;
-  background-color: black;
+  background-color: #121212;
   border-radius: 0.25rem;
   padding: 0.25rem;
   font-weight: bold;
@@ -132,7 +134,7 @@ const LogoLink = styled(Link)`
     height: 2rem;
     border-radius: 0.25rem;
     background-color: #5eddac;
-    color: black;
+    color: #121212;
     display: flex;
     align-items: center;
     justify-content: center;
