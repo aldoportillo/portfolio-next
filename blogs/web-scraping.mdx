@@ -8,8 +8,6 @@ published_at: "2023-10-27T20:15:31Z"
 
 I am currently working on a Ruby on Rails project that allows MMA promoters to create events and MMA fighters to find matches. In order to see the entire workflow of the app, I need some data; however, I wanted the data to be similar to the data I will require for the user. Fortunately, the UFC exists and their website has images, names, reach, weights, and heights. Unfortunately, the UFC does not offer an API for this data. So I had to web scrape it. Below is the code I wrote to scrape the fighters data using a csv of their slugs.
 
-
-
 ## Tools
 
 1. [http](https://github.com/httprb/http)
@@ -21,14 +19,14 @@ I am currently working on a Ruby on Rails project that allows MMA promoters to c
 ## Steps
 
 1. Iterate through the slugs in the CSV in lib/sample_data/athletes_slugs.csv
-2. Make a http request to "https://www.ufc.com/athlete/#{slug}"
+2. Make a http request to `https://www.ufc.com/athlete/#{slug}`
 3. Parse the request using Nokogiri to get the document
 4. Scrape data you need using classes
 5. Save them in CSV if they don't exist
 
 ## Code
 
-```ruby
+```rails
 #In lib/tasks/scrape.rake
 
 desc "Scrape Athlete Metric Data"

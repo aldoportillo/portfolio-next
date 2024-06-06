@@ -12,6 +12,7 @@ export const metadata = {
 async function Blogs() {
 
   const blogData = await getBlogPostList();
+
   const groupedByYear = blogData?.reduce((acc, blog) => {
     const year = new Date(blog.published_at).getFullYear();
     if (!acc[year]) {
