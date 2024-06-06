@@ -16,6 +16,59 @@ const links = [
   { url: "/blogs", title: "Blog", icon: BlogIcon},
   { url: "/contact", title: "Contact", icon: ContactIcon}
 ];
+
+const topVariants = {
+  closed: {
+    rotate: 0,
+  },
+  opened: {
+    rotate: 45,
+    backgroundColor: "rgb(255,255,255)",
+  },
+};
+const centerVariants = {
+  closed: {
+    opacity: 1,
+  },
+  opened: {
+    opacity: 0,
+  },
+};
+
+const bottomVariants = {
+  closed: {
+    rotate: 0,
+  },
+  opened: {
+    rotate: -45,
+    backgroundColor: "rgb(255,255,255)",
+  },
+};
+
+const listVariants = {
+  closed: {
+    x: "100vw",
+  },
+  opened: {
+    x: 0,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const listItemVariants = {
+  closed: {
+    x: -10,
+    opacity: 0,
+  },
+  opened: {
+    x: 0,
+    opacity: 1,
+  },
+};
+
 const getWindowSize = () => {
   const { innerWidth } = window;
   return innerWidth;
@@ -23,60 +76,12 @@ const getWindowSize = () => {
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const [windowSize, setWindowSize] = useState(getWindowSize());
+  const [windowSize, setWindowSize] = useState(0);
 
-  const topVariants = {
-    closed: {
-      rotate: 0,
-    },
-    opened: {
-      rotate: 45,
-      backgroundColor: "rgb(255,255,255)",
-    },
-  };
-  const centerVariants = {
-    closed: {
-      opacity: 1,
-    },
-    opened: {
-      opacity: 0,
-    },
-  };
-
-  const bottomVariants = {
-    closed: {
-      rotate: 0,
-    },
-    opened: {
-      rotate: -45,
-      backgroundColor: "rgb(255,255,255)",
-    },
-  };
-
-  const listVariants = {
-    closed: {
-      x: "100vw",
-    },
-    opened: {
-      x: 0,
-      transition: {
-        when: "beforeChildren",
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const listItemVariants = {
-    closed: {
-      x: -10,
-      opacity: 0,
-    },
-    opened: {
-      x: 0,
-      opacity: 1,
-    },
-  };
-
+  useEffect(() => {
+    setWindowSize(getWindowSize())
+  }, [])
+  
   useEffect(() => {
     function handleResize() {
       setWindowSize(getWindowSize());
