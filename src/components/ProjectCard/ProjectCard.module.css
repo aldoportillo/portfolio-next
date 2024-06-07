@@ -4,6 +4,9 @@
     color: #fff;
     border-radius: 8px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .projectCard > img {
@@ -14,6 +17,7 @@
 
 .projectInfo {
     padding: 15px;
+    height: 100%;
 }
 
 .projectTitle{
@@ -24,4 +28,36 @@
 .projectDescription {
     font-size: 1em;
     color: #ccc;
+}
+
+.projectLinks{
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0 15px 15px 15px;
+    gap: 10px;
+}
+
+.link{
+    background-color: #484747;
+    border: 1px solid #5eddac;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.4s, color 0.4s;
+}
+
+.link:hover{
+    background-color: #5eddac;
+    border-color: #ccc;
+}
+.link > a{
+    color: white;
+}
+
+.link > a:visited{
+    color: white;
 }

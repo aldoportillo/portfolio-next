@@ -20,24 +20,32 @@ const projectsData = [
     id: 1,
     name: "Neat on the Rocks",
     description: "A social media application that brings users together for memorable and responsible nights. Built with a React client, Node and Express server. Databases with PostgreSQL for structured cocktail data and MongoDB for unstructured user data. Hosted on AWS. This app is meant to revolutionize the way people drink.",
-    image: NotrCard
+    image: NotrCard,
+    liveLink: "https://www.neatonthe.rocks/"
+
   },
   {
     id: 2,
     name: "BodyTrackPro",
     description: "A webapp built on Rails with a PostgreSQL database that allows users to track their body metrics, vitamin intake and nutrition. Users can create, read, update, and delete body metrics and macro nutrients. With beautiful charts and graphs, users can visualize their progress over time. This app is meant to help users achieve their fitness goals.",
-    image: BtpCard
+    image: BtpCard,
+    serverRepoLink: "https://github.com/aldoportillo/BodyTrackPro"
   },
   {
     id: 3,
     name: "BoutBuddy",
     description: "An event management system that is best described as Tinder for fighters. Swipe right on someone you think you can beat, swipe left on someone you think you can't. If you both swipe right, you automatically get assigned to an event created by a promoter. This app focuses a lot on privilege based roles and permissions. Built with Rails and a PostgreSQL database. ",
-    image: BoutBuddyCard},
+    image: BoutBuddyCard,
+    serverRepoLink: "https://github.com/aldoportillo/boutbuddy"
+  },
   {
     id: 4,
     name: "TAA Logistics Website and CRM",
     description: "My first ever client project. A website and CRM for a logistics company. The website is built with React and the CRM is built with Rails. The CRM allows the client to manage their employees, quotes and applications. The CRM focuses a lot on privilege based roles and permissions. This is meant to optimize their workflow throw mass texts to dispatched drivers and automated quotes based on their current pricing model.",
-    image: TAA
+    image: TAA,
+    liveLink: "https://www.taalogistics.com/",
+    clientRepoLink: "https://github.com/aldoportillo/TAA-Logistics-Client",
+    serverRepoLink: "https://github.com/aldoportillo/TAA-Logistics-Server"
   },
   {
     id: 5,
