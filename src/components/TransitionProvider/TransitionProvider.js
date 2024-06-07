@@ -1,20 +1,17 @@
 "use client";
-
 import { AnimatePresence } from "framer-motion";
-import Navbar from "@/components/NavBar";
-import Footer from "../Footer";
 import { motion } from "framer-motion";
-import { usePathname } from "next/navigation";
 import styled from "styled-components";
-import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const TransitionProvider = ({ children }) => {
+
   const pathName = usePathname();
 
   return (
     <AnimatePresence mode="wait">
       <PageContainer key={pathName}>
-        <TransitionOverlay
+        {/* <TransitionOverlay
           animate={{ height: "0vh" }}
           exit={{ height: "140vh" }}
           transition={{ duration: 0.5, ease: "easeOut" }}
@@ -30,34 +27,14 @@ const TransitionProvider = ({ children }) => {
         <TransitionOverlay
           initial={{ height: "140vh" }}
           animate={{ height: "0vh", transition: { delay: 0.5 } }}
-        />
-        <Header>
-          <LogoContainer>
-            <LogoLink href="/">
-              <span>Aldo</span>
-              <span className="logo-text">Portillo</span>
-            </LogoLink>
-          </LogoContainer>
-          <Navbar />
-        </Header>
-        <MainContent>{children}</MainContent>
-        <Footer />
+        /> */}
+        {children}
       </PageContainer>
     </AnimatePresence>
   );
 };
 
 export default TransitionProvider;
-
-const Header = styled.header`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  background-color: var(--header);
-  justify-content: space-between;
-  max-width: 1200px;
-  padding: 2vh 0px;
-`;
 
 const PageContainer = styled.div`
   display: flex;
@@ -97,51 +74,4 @@ const PathNameDisplay = styled(motion.div)`
   z-index: 50;
   width: fit-content;
   height: fit-content;
-`;
-
-const MainContent = styled.main`
-  display: flex;
-  position: relative;
-  overflow: hidden;
-  justify-content: center;
-  width: 100%;
-  flex: 1;
-  
-
-  @media (max-width: 768px) {
-    width: 100vw;
-    padding: 0;
-  }
-`;
-
-const LogoLink = styled(Link)`
-  font-size: 2rem;
-  background-color: #121212;
-  border-radius: 0.25rem;
-  padding: 0.25rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  span {
-    color: white;
-    margin-right: 0.25rem;
-  }
-
-  .logo-text {
-    width: 7rem;
-    height: 2rem;
-    border-radius: 0.25rem;
-    background-color: #5eddac;
-    color: #121212;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  justify-content: center;
 `;

@@ -42,3 +42,62 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+
+header{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: var(--header);
+  justify-content: space-between;
+  max-width: 1200px;
+  padding: 2vh 0px;
+}
+
+main{
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  justify-content: center;
+  width: 100%;
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  main{
+    width: 100vw;
+    padding: 0;
+  }
+}
+
+.header-logo{
+  font-size: 2rem;
+  background-color: #121212;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-logo span {
+  color: white;
+  margin-right: 0.25rem;
+}
+
+
+.logo-container{
+  display: flex;
+  justify-content: center;
+}
+
+.logo-text {
+  width: 7rem;
+  height: 2rem;
+  border-radius: 0.25rem;
+  background-color: #5eddac;
+  color: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
