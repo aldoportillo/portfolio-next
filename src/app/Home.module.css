@@ -60,6 +60,15 @@
 
 }
 
+.aboutMe > p > a{
+  color: #5eddac;
+}
+
+.aboutMe > p > strong{
+  color: #5eddac;
+}
+
+
 
 @media (min-width: 768px) {
     

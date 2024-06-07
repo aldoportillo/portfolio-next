@@ -11,7 +11,7 @@ import ContactIcon from '@/../public/search-icon.png';
 const links = [
   { url: "/", title: "Home", icon: HomeIcon},
   { url: "/projects", title: "Projects", icon: ProjectsIcon},
-  { url: "/blogs", title: "Blog", icon: BlogIcon},
+  { url: "/blogs", title: "Blogs", icon: BlogIcon},
   { url: "/contact", title: "Contact", icon: ContactIcon}
 ];
 

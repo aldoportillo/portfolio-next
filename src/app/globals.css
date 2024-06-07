@@ -80,7 +80,7 @@ main{
   justify-content: center;
 }
 
-.header-logo span {
+.header-logo > span:first-child {
   color: white;
   margin-right: 0.25rem;
 }
@@ -92,11 +92,12 @@ main{
 }
 
 .logo-text {
+  color: #121212;
   width: 7rem;
   height: 2rem;
   border-radius: 0.25rem;
   background-color: #5eddac;
-  color: #121212;
+  
   display: flex;
   align-items: center;
   justify-content: center;

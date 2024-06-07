@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,7 +7,10 @@ const NavLink = ({ link }) => {
   const pathName = usePathname();
 
   return (
-    <StyledLink href={link.url}><Image src={link.icon} alt={`${link.title} icon`}/><span>{link.title}</span></StyledLink>
+    <StyledLink href={link.url} isActive={pathName === link.url}>
+      <Image src={link.icon} alt={`${link.title} icon`} />
+      <span>{link.title}</span>
+    </StyledLink>
   );
 };
 
@@ -19,18 +20,18 @@ const StyledLink = styled(Link)`
   gap: 5px;
   align-items: center;
   border: 1px solid #2c2c2c;
-  padding: .5em .75em;
+  padding: 0.5em 0.75em;
   border-radius: 10px;
   color: #fff;
   background-color: transparent;
-  transition: background-color 0.4s, color 0.4s; 
+  transition: background-color 0.4s, color 0.4s;
 
   &:hover {
-    background-color: #5eddac; 
+    background-color: #5eddac;
     color: #242424;
   }
   &:active {
-    background-color: #5eddac; 
+    background-color: #5eddac;
     color: #242424;
   }
 
@@ -40,6 +41,13 @@ const StyledLink = styled(Link)`
     min-width: 20px;
     width: 20px;
   }
+
+  ${({ isActive }) =>
+    isActive &&
+    `
+    background-color: #5eddac;
+    color: #242424;
+  `}
 `;
 
 export default NavLink;
