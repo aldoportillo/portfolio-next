@@ -1,7 +1,7 @@
 import React from 'react'
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { loadBlogPost } from '@/helpers/file-helpers';
-import COMPONENT_MAP from '@/helpers/mdx-components';
+import COMPONENT_MAP from '@/helpers/mdxComponents';
 import styles from './Blog.module.css'
 
 export async function generateMetadata({ params }) {

@@ -16,17 +16,35 @@ function ContactForm() {
             [name]: value
         }));
     };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        
-        console.log(formData);
-        alert('Hey there! Thanks for reaching out! Unfortunately, this form is not connected to a backend yet, so your message has not been sent. Feel free to reach out to me at any of the links in the footer!');
-        setFormData({
-            name: '',
-            email: '',
-            message: ''
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+    
+      try {
+        const response = await fetch('/api/sendContactEmail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
         });
+    
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+    
+        const result = await response.json();
+        alert('Email sent successfully!');
+        console.log(result);
+    
+        setFormData({
+          name: '',
+          email: '',
+          message: ''
+        });
+      } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        alert('Failed to send message. Please try again later.');
+      }
     };
 
     return (
