@@ -3,18 +3,16 @@ import LoadBalancer from "@/../public/loadBalancer.png";
 import Server from "@/../public/server.png";
 import Image from "next/image";
 import styles from "./LoadBalancerDemo.module.css";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import clsx from "clsx";
 import { LayoutGroup, motion } from "framer-motion";
 
-const range = (n) => Array.from({ length: n }, (_, i) => i);
 
 function LoadBalancerDemo() {
 
-  const id = React.useId();
   const [strategy, setStrategy] = useState("weightRoundRobin");
-  const [animating, setAnimating] = useState(false);
   const [activeHit, setActiveHit] = useState(null);
+  const requestCounter = useRef(0);
 
   const [servers, setServers] = useState([
     { id: 0, name: "Server 0", weight: 0.5, hits: [], totalHits: 0 },
@@ -22,13 +20,25 @@ function LoadBalancerDemo() {
     { id: 2, name: "Server 2", weight: 0.2, hits: [], totalHits: 0 },
   ]);
 
+  const getNextServerIndex = () => {
+    if (strategy === "roundRobin") {
+
+      console.log(requestCounter.current % servers.length)
+      return requestCounter.current % servers.length;
+    }
+    //TODO: Implement Weighted Round Robin
+    console.log("IMPLEMENT NEXT")
+  }
+
   const sendRequest = () => {
-    const newHitId = `hit-${Date.now()}`; // Unique ID for each hit
+    const newHitId = `hit-${Date.now()}`; 
     setActiveHit(newHitId);
+
+    const serverIndex = getNextServerIndex();
 
     setTimeout(() => {
       const updatedServers = servers.map((server) => {
-        if (server.id === 1) { // Target Server 1 for this example
+        if (server.id === serverIndex) { 
           return {
             ...server,
             hits: [...server.hits, newHitId],
@@ -37,9 +47,10 @@ function LoadBalancerDemo() {
         }
         return server;
       });
+      requestCounter.current += 1;
       setServers(updatedServers);
-      setActiveHit(null); // Clear the temporary hit from the load balancer
-    }, 1000); // Duration for the hit to appear in the load balancer before moving
+      setActiveHit(null);
+    }, 1000);
   };
 
   return (
