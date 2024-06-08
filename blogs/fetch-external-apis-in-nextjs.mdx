@@ -1,0 +1,116 @@
+---
+title: "Fetch External APIs in Next.js"
+slug: "fetch-external-apis-in-nextjs"
+published_at: "2024-06-08T12:00:00Z"
+interactive: false
+tag_list: ["nextjs", "security", "api", "smtp"]
+---
+
+## Introduction
+
+Next.js is a up and coming framework for building React applications. It focuses on Server side rendered (SSR) applications to provide better search engine optimization (SEO) and performance. Why Next.js? Next is briding the gap between single page applications (SPA) and SSR applications. This is a fairly new concept, so as expected, there are some challenges that come with it. In October 2023, Next.js version 14 was released and it seemed as if an entire new framework was introduced when they switched from the `/pages` router to `/app` router. This made their previous documentation outdated. Since I didn't adapt Next before this change, I had to learn from the new documentation. Unfortunately, the new documentation was not as detailed as the previous one and it referenced the previous one a lot. This made it difficult to understand how to fetch external APIs in Next.js. In this post, I will share how to make an external API request in Next and share one of my favorite form security strategies.
+
+## Fetching External APIs in Next.js
+
+You might be thinking to yourself: "Aldo why is it that you don't just use a client component?" Well, I am using an environment variable that I don't want to expose to the client.
+
+```jsx
+//In /app/api/sendContactEmail/route.js
+const postmark = require('postmark');
+
+const client = new postmark.ServerClient(process.env.POSTMARK_KEY);
+
+export async function POST(request) {
+    const { email, name, message, honey } = await request.json();
+
+    if (honey) {
+        console.error("Honey pot field was filled out");
+        return new Response(JSON.stringify({ error: "Honey pot field was filled out" }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
+    const templateModel = {
+        email: email,
+        name: name,
+        message: message
+    };
+
+    try {
+        const result = await client.sendEmailWithTemplate({
+            //More Postmark API options here
+            "TemplateModel": templateModel
+        });
+
+        console.info("Sent to postmark for delivery", result);
+        return new Response(JSON.stringify({ message: 'Email sent successfully' }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    } catch (error) {
+        console.error("Unable to send via postmark: " + error.message);
+        return new Response(JSON.stringify({ error: error.message }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+}
+```
+
+In the code above, I am using the Postmark API to send an email. I am using the `process.env.POSTMARK_KEY` to authenticate with Postmark. This is an environment variable that I don't want to expose to the client. This is why I am using a server component to make the request. Take a note of the directory. We have this code inside of `/app/api/sendContactEmail/route.js`. This is because we are using the new `/app` router. Similar to `page.js`, `route.js` is a reserved file name. 
+
+If you run your build command you will see that this route is dynamic.
+
+```bash
+$ npm run build
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    375 B          99.5 kB
+├ ○ /_not-found                          875 B          88.1 kB
+├ ƒ /api/sendContactEmail                0 B                0 B
+├ ○ /blogs                               323 B          94.4 kB
+├ ƒ /blogs/[blog]                        1.25 kB        88.5 kB
+```
+
+Ignore the large sizes. I'm still learning Next.js.
+
+In your component you can now call this route like so:
+
+```jsx
+//In /app/pages/contact.js
+"use client"
+export default function Contact() {
+    //Set States and Effects here
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const response = await fetch('/api/sendContactEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, name, message, honey })
+        });
+
+        const data = await response.json();
+        console.log(data);
+    }
+
+    return (
+        //Form here
+    );
+}
+```
+
+Yes we are in a client component; however, the fetch is being made to a server component.
+
+## Form Security
+
+In the code above, I am using a honey pot field to prevent spam. A honey pot field is a hidden field that is only visible to bots. If the field is filled out, then we know that it is a bot. This is a simple and effective way to prevent spam. I am doing this because I don't want to use a captcha. I find captchas to be annoying and I don't want to annoy my users, but I also don't want to be spammed or ruin my deliverability score with my SMTP provider.
+
+Maybe I'll make a nice motion animation for the honey pot field here later. That would be fun.
+
+## Conclusion
+
+In this post, I shared how to fetch external APIs in Next.js from a server component and how to prevent spam with a honey pot field. I hope this helps you in your Next.js journey. Stay tuned for more Next.js posts. 
