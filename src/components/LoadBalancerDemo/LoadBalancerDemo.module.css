@@ -23,7 +23,8 @@
 }
 
 .options > button.selected{
-    background-color: #66bb6a;
+    background-color: #5eddac;
+    color: #000;
 }
 
 .animationWrapper{
@@ -33,7 +34,7 @@
 }
 
 .hit{
-    background-color: #66bb6a;
+    background-color: #5eddac;
     color: black;
     border-radius: 5px;
     transition: background-color 0.2s;
@@ -56,12 +57,11 @@
 }
 
 .hits{
-    overflow: hidden;
     height: 100%;
     max-height: 60px;
-    overflow-y: auto;
     margin: 10px 0;
 }
+
 
 .analytics {
     background-color: #242424;
