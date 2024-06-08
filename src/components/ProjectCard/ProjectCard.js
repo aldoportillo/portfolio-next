@@ -18,7 +18,7 @@ function ProjectCard({ project }) {
           <div className={styles.link}>
           <TfiWorld />
           <a href={project.liveLink} target="_blank" rel="noreferrer">
-            Live Site
+            Live
           </a>
           </div>
         )}
@@ -30,7 +30,7 @@ function ProjectCard({ project }) {
             target="_blank"
             rel="noreferrer"  
           >
-            Server Repo
+            Server
           </a>
           </div>
         )}
@@ -42,7 +42,7 @@ function ProjectCard({ project }) {
             target="_blank"
             rel="noreferrer"
           >
-            Client Repo
+            Client
           </a>
           </div>
         )}

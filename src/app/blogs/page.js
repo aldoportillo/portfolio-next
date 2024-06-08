@@ -53,11 +53,7 @@ async function Blogs() {
 
 function formatDate(timestamp) {
   const date = new Date(timestamp);
-  const now = new Date();
   const options = { month: "long", day: "numeric" };
-  if (date.getFullYear() !== now.getFullYear()) {
-    options.year = "numeric";
-  }
   return date.toLocaleDateString("en-US", options);
 }
 

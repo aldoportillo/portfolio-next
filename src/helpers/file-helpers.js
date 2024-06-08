@@ -21,7 +21,7 @@ export async function getBlogPostList() {
   }
 
   return blogPosts.sort((p1, p2) =>
-    p1.publishedAt < p2.publishedAt ? 1 : -1
+    new Date(p2.published_at).getTime() - new Date(p1.published_at).getTime()
   );
 }
 
