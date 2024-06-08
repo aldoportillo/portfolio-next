@@ -19,7 +19,7 @@ function Home({ blogData }) {
       </h1>
       <h2 className={styles.subheader}>Full Stack Engineer | MMA Fighter | Bartender</h2>
       <div className={styles.inline}>
-        <Image src={Typing} className={styles.heroImg} alt="Typing" priority unoptimized/>
+        <Image src={Typing} alt="Typing Icon" priority unoptimized/>
         <p className={styles.bio}>
           Based in Chicago. Blending problem-solving skills with creativity and resilience learned from my roles as an MMA fighter and bartender. My diverse experiences fuel my ability to approach technology challenges from unique angles, constantly pushing for growth and innovation.
         </p>

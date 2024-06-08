@@ -8,8 +8,8 @@ const NavLink = ({ link }) => {
 
   return (
     <StyledLink href={link.url} isActive={pathName === link.url}>
-      <Image src={link.icon} alt={`${link.title} icon`} />
       <span>{link.title}</span>
+      <Image src={link.icon} alt={`${link.title} icon`} />
     </StyledLink>
   );
 };
