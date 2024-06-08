@@ -9,6 +9,8 @@ published_at: "2024-06-05T20:13:02Z"
 
 ## Introduction
 
+Before I decided to switch to AWS for my personal projects, I studied system design. I found it to be intuitive; however, I wanted more visuals, so I booted up Nginx and created a simple load balancer to help me understand the different algorithms. This seemed like a huge hurdle just to see how each algorithm works, so I decided to create an interactive demo to help others understand load balancer algorithms.
+
 Load balancers are used to distribute incoming network traffic across multiple servers. This is done to ensure that no single server is overwhelmed with requests. Load balancers can be implemented in software or hardware and can be used to distribute traffic across multiple servers, data centers, or even cloud providers.
 
 ## Static Load Balancing
@@ -21,24 +23,12 @@ Round Robin is one of the simplest load balancing algorithms. It distributes inc
 
 ### Weighted Round Robin
 
-Weighted Round Robin is an extension of the Round Robin algorithm that assigns a weight to each server. Servers with higher weights receive more requests than servers with lower weights.
+Weighted Round Robin is an extension of the Round Robin algorithm that assigns a weight to each server. Servers with higher weights receive more requests per cycle than servers with lower weights. You can adjust the weights and cycle in the demo below to distribute traffic according to the capacity of each server.
 
 ### Hashed Load Balancing
 
-Hashed Load Balancing uses a hash function to map incoming requests to a specific server. This ensures that requests for the same resource are always directed to the same server.
+Hashed Load Balancing uses a hash function to hash an IP address an map incoming requests to a specific server. This ensures that requests for the same resource are always directed to the same server. Directing requests to the same server can be useful for caching or session management if they are performed on a per-server basis.
 
-**Interact Below to Explore Static Load Balancing Algorithms:**
+**Click on an algorithm below and click the load balancer to send a request to see how it works:**
 
 <LoadBalancerDemo />
-
-## Dynamic Load Balancing
-
-Dynamic load balancing algorithms take into account the current load on each server and adjust the distribution of traffic accordingly. These algorithms can adapt to changes in traffic patterns and server availability.
-
-### Least Connections
-
-Least Connections is a dynamic load balancing algorithm that directs incoming requests to the server with the fewest active connections. This helps distribute traffic evenly across servers and prevents any single server from becoming overloaded.
-
-### Least Response Time
-
-Least Response Time is a dynamic load balancing algorithm that directs incoming requests to the server with the fastest response time. This helps improve the overall performance of the system by reducing latency for clients.
