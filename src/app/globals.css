@@ -14,7 +14,8 @@
   --header: #121212;
 }
 
-body, html {
+html {
+  max-width: 100%;
   overflow-x: hidden;
 }
 
@@ -27,15 +28,16 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  width: 100%;
   align-items: center;
   justify-content: space-between;
-  overflow-x: hidden;
-  
+  max-width: 80%;
+  margin: 0 auto;
 }
 
 main{
   background-color: var(--background-color);
+  width: 100%;
+  border-radius: 15px;
 }
 
 h1 {
@@ -66,6 +68,10 @@ main{
   main{
     width: 100vw;
     padding: 0;
+  }
+
+  body{
+    max-width: 100%;
   }
 }
 
