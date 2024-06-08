@@ -51,7 +51,6 @@ header{
   align-items: center;
   background-color: var(--header);
   justify-content: space-between;
-  max-width: 1200px;
   padding: 2vh 0px;
 }
 
