@@ -10,8 +10,9 @@ import VV from "@/../public/vino-valley-card.png"
 export const metadata = {
   title: "My Projects | Aldo Portillo",
   description: "A collection of projects",
-  image: "../../public/save-icon.png",
-  favicon: "../../public/save-icon.png",
+  icons: {
+    icon: "/code-icon.png",
+  },
   
 };
 

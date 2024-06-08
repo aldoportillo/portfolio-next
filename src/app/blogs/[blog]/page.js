@@ -11,6 +11,10 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${frontmatter.title} | Aldo Portillo`,
+    description: frontmatter.description,
+    icons: {
+      icon: "/blog-icon.png",
+    },
   };
 }
 

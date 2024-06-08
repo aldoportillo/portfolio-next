@@ -5,9 +5,9 @@ import styles from "./Contact.module.css";
 export const metadata = {
   title: "Contact Me | Aldo Portillo",
   description: "Contact me",
-  image: "../../public/save-icon.png",
-  favicon: "../../public/save-icon.png",
-  
+  icons: {
+    icon: "/search-icon.png",
+  },
 };
 
 function Contact() {
