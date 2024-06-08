@@ -29,12 +29,9 @@ function LoadBalancerDemo() {
 
   const getNextServerIndex = (ip) => {
     if (strategy === "roundRobin") {
-
-      console.log(requestCounter.current % servers.length)
       return requestCounter.current % servers.length;
     } else if (strategy === "sourceIpHash") {
       const hashedIp = hashIP(ip);
-      console.log(hashedIp)
       return hashedIp % servers.length;
     } else if (strategy === "weightRoundRobin") {
       let totalWeight = servers.reduce((acc, server) => acc + server.weight, 0);
@@ -52,7 +49,7 @@ function LoadBalancerDemo() {
 
   const sendRequest = () => {
     const randomIP = Math.floor(Math.random() * 256) + "." + Math.floor(Math.random() * 256) + "." + Math.floor(Math.random() * 256) + "." + Math.floor(Math.random() * 256);
-    const newHitId = `hit-${randomIP}`; 
+    const newHitId = randomIP; 
     setActiveHit(newHitId);
 
     const serverIndex = getNextServerIndex(randomIP);
@@ -116,25 +113,58 @@ function LoadBalancerDemo() {
                 className={styles.hit}
                 initial={{ opacity: 0.5 }}
                 animate={{ opacity: 1 }}
+                final={{ opacity: 0.5 }}
               >{activeHit}</motion.div>
             )}
           </div>
           <div className={styles.servers}>
             {servers.map((server) => (
-              <div key={server.id} className={styles.server}>
+              <span key={server.id} className={styles.server}>
+                
                 <Image src={Server} alt="Server" width={50} height={50} />
-                {server.hits.map((hitId) => (
-                  <motion.div
-                    layoutId={hitId}
-                    key={hitId}
-                    className={styles.hit}
-                  >{hitId}</motion.div>
-                ))}
-              </div>
+                <div className={styles.hits}>
+                  {server.hits.map((hitId) => (
+                    <motion.div
+                      layoutId={hitId}
+                      key={hitId}
+                      className={styles.hit}
+                    >{hitId}</motion.div>
+                  ))}
+                </div>
+              </span>
             ))}
           </div>
         </div>
       </LayoutGroup>
+      <div className={styles.analytics}>
+        <h2>Analytics</h2>
+        <div>
+          <label>Requests per cycle</label>
+          <input
+            type="number"
+            value={requestsPerCycle}
+            onChange={(e) => setRequestsPerCycle(e.target.value)}
+          />
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Server</th>
+              <th>Weight</th>
+              <th>Hits</th>
+            </tr>
+          </thead>
+          <tbody>
+            {servers.map((server) => (
+              <tr key={server.id}>
+                <td>{server.name}</td>
+                <td>{server.weight}</td>
+                <td>{server.hits.length}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -28,15 +28,82 @@
 
 .animationWrapper{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
 .hit{
     background-color: #66bb6a;
-    color: white;
-    padding: 10px 20px;
+    color: black;
     border-radius: 5px;
-    margin: 10px;
     transition: background-color 0.2s;
+    font-size: 0.5rem;
+    margin: auto;
+    width: fit-content;
 }
+
+.server{
+    display: flex;
+    flex-direction: row-reverse;
+    max-height: 80px;
+    align-items: flex-start;
+}
+
+.server > img {
+    width: 60px;
+    height: 60px;
+    margin: 10px;
+}
+
+.hits{
+    overflow: hidden;
+    height: 100%;
+    max-height: 60px;
+    overflow-y: auto;
+    margin: 10px 0;
+}
+
+.analytics {
+    background-color: #242424;
+    padding: 20px;
+    border-radius: 5px;
+    color: rgba(255, 255, 255, 0.87);
+  }
+  
+  .analytics h2 {
+    color: #5eddac;
+    margin-bottom: 20px;
+  }
+  
+  .analytics label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .analytics input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #5eddac;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+  }
+  
+  .analytics table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .analytics th,
+  .analytics td {
+    padding: 10px;
+    border: 1px solid #5eddac;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.87);
+  }
+  
+  .analytics th {
+    background-color: #5eddac;
+    color: #242424;
+  }
