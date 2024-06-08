@@ -3,7 +3,7 @@ import LoadBalancer from "@/../public/loadBalancer.png";
 import Server from "@/../public/server.png";
 import Image from "next/image";
 import styles from "./LoadBalancerDemo.module.css";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
 import { LayoutGroup, motion } from "framer-motion";
 
@@ -19,11 +19,12 @@ function LoadBalancerDemo() {
   const [strategy, setStrategy] = useState("weightRoundRobin");
   const [activeHit, setActiveHit] = useState(null);
   const requestCounter = useRef(0);
+  const [requestsPerCycle, setRequestsPerCycle] = useState(10);
 
   const [servers, setServers] = useState([
-    { id: 0, name: "Server 0", weight: 0.5, hits: [], totalHits: 0 },
-    { id: 1, name: "Server 1", weight: 0.3, hits: [], totalHits: 0 },
-    { id: 2, name: "Server 2", weight: 0.2, hits: [], totalHits: 0 },
+    { id: 0, name: "Server 0", weight: 0.5, hits: [] },
+    { id: 1, name: "Server 1", weight: 0.3, hits: [] },
+    { id: 2, name: "Server 2", weight: 0.2, hits: [] },
   ]);
 
   const getNextServerIndex = (ip) => {
@@ -35,9 +36,18 @@ function LoadBalancerDemo() {
       const hashedIp = hashIP(ip);
       console.log(hashedIp)
       return hashedIp % servers.length;
+    } else if (strategy === "weightRoundRobin") {
+      let totalWeight = servers.reduce((acc, server) => acc + server.weight, 0);
+      let currentCount = requestCounter.current % requestsPerCycle;
+      let weightSum = 0;
+
+      for (let i = 0; i < servers.length; i++) {
+        weightSum += (servers[i].weight / totalWeight) * requestsPerCycle;
+        if (currentCount < weightSum) {
+          return i;
+        }
+      }
     }
-    //TODO: Implement Weighted Round Robin
-    console.log("IMPLEMENT NEXT")
   }
 
   const sendRequest = () => {
@@ -52,8 +62,7 @@ function LoadBalancerDemo() {
         if (server.id === serverIndex) { 
           return {
             ...server,
-            hits: [...server.hits, newHitId],
-            totalHits: server.totalHits + 1
+            hits: [...server.hits, newHitId]
           };
         }
         return server;
@@ -63,6 +72,15 @@ function LoadBalancerDemo() {
       setActiveHit(null);
     }, 1000);
   };
+
+  useEffect(() => {
+    requestCounter.current = 0;
+    setServers([
+      { id: 0, name: "Server 0", weight: 0.5, hits: []},
+    { id: 1, name: "Server 1", weight: 0.3, hits: [] },
+    { id: 2, name: "Server 2", weight: 0.2, hits: [] },
+    ]);
+  }, [strategy]);
 
   return (
     <div className={styles.demoWrapper}>
