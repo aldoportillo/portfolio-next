@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className} style={{"backgroundColor": "#121212"}}>
-      <TransitionProvider>
+      {/* <TransitionProvider> */}
       <header>
           <div className="logo-container">
             <Link href="/" className="header-logo">
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         </header>
         <main>{children}</main>
         <Footer />
-      </TransitionProvider>
+      {/* </TransitionProvider> */}
       </body>
     </html>
   );
