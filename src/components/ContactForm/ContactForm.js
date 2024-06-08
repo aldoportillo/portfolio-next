@@ -6,7 +6,8 @@ function ContactForm() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        message: ''
+        message: '',
+        honey: ''
     });
 
     const handleChange = (event) => {
@@ -39,7 +40,8 @@ function ContactForm() {
         setFormData({
           name: '',
           email: '',
-          message: ''
+          message: '',
+          honey: ''
         });
       } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
@@ -72,6 +74,13 @@ function ContactForm() {
                     onChange={handleChange}
                     required
                 />
+                <HoneyInput
+                    type="text"
+                    name="honey"
+                    placeholder="Leave this field empty"
+                    value={formData.honey}
+                    onChange={handleChange}
+                  />
                 <SubmitButton type="submit">Send Message</SubmitButton>
             </ContactFormWrapper>
     );
@@ -125,4 +134,10 @@ const SubmitButton = styled.button`
   &:hover {
     background-color: #46b690;
   }
+`;
+
+const HoneyInput = styled.input`
+  height: 0;
+  width: 0;
+  border: none;
 `;

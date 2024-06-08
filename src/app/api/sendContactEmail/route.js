@@ -4,7 +4,15 @@ const postmark = require('postmark');
 const client = new postmark.ServerClient(process.env.POSTMARK_API_KEY);
 
 export async function POST(request) {
-    const { email, name, message } = await request.json();
+    const { email, name, message, honey } = await request.json();
+
+    if (honey) {
+        console.error("Honey pot field was filled out");
+        return new Response(JSON.stringify({ error: "Honey pot field was filled out" }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
 
     const templateModel = {
         email: email,
