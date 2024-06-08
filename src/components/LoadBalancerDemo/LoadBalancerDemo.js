@@ -7,6 +7,12 @@ import React, { useState, useRef } from "react";
 import clsx from "clsx";
 import { LayoutGroup, motion } from "framer-motion";
 
+const hashIP = (ip) => {
+  const ipParts = ip.split(".");
+  return ipParts.reduce((acc, part) => {
+    return acc + parseInt(part);
+  }, 0);
+};
 
 function LoadBalancerDemo() {
 
@@ -20,21 +26,26 @@ function LoadBalancerDemo() {
     { id: 2, name: "Server 2", weight: 0.2, hits: [], totalHits: 0 },
   ]);
 
-  const getNextServerIndex = () => {
+  const getNextServerIndex = (ip) => {
     if (strategy === "roundRobin") {
 
       console.log(requestCounter.current % servers.length)
       return requestCounter.current % servers.length;
+    } else if (strategy === "sourceIpHash") {
+      const hashedIp = hashIP(ip);
+      console.log(hashedIp)
+      return hashedIp % servers.length;
     }
     //TODO: Implement Weighted Round Robin
     console.log("IMPLEMENT NEXT")
   }
 
   const sendRequest = () => {
-    const newHitId = `hit-${Date.now()}`; 
+    const randomIP = Math.floor(Math.random() * 256) + "." + Math.floor(Math.random() * 256) + "." + Math.floor(Math.random() * 256) + "." + Math.floor(Math.random() * 256);
+    const newHitId = `hit-${randomIP}`; 
     setActiveHit(newHitId);
 
-    const serverIndex = getNextServerIndex();
+    const serverIndex = getNextServerIndex(randomIP);
 
     setTimeout(() => {
       const updatedServers = servers.map((server) => {
