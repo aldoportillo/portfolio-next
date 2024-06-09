@@ -15,10 +15,11 @@ const hashIP = (ip) => {
 };
 const LoggerComponent = ({ logs }) => {
   return (
-    <div style={{ marginTop: '20px', border: '1px solid gray', padding: '10px' }}>
-      <h2>Logger</h2>
+    <div className={styles.loggerWrapper}>
       {logs.map((log, index) => (
-        <div key={index}>{log.message}</div>
+        <div key={index} className={styles.log}>
+          {log.message}
+        </div>
       ))}
     </div>
   );
@@ -55,7 +56,7 @@ function LoadBalancerDemo() {
     } else if (strategy === "weightRoundRobin") {
       let totalWeight = servers.reduce((acc, server) => acc + server.weight, 0);
       let currentCount = requestCounter.current % requestsPerCycle;
-      let weightSum = 0;
+      let weightSum = 0;      
 
       for (let i = 0; i < servers.length; i++) {
         weightSum += (servers[i].weight / totalWeight) * requestsPerCycle;
@@ -70,7 +71,7 @@ function LoadBalancerDemo() {
   const handleWeightChange = (serverId, newWeight) => {
     const updatedServers = servers.map((server) => {
       if (server.id === serverId) {
-        return { ...server, weight: newWeight };
+        return { ...server, weight: Number(newWeight) };
       }
       return server;
     });
@@ -109,6 +110,7 @@ function LoadBalancerDemo() {
 
   useEffect(() => {
     requestCounter.current = 0;
+    setLogs([]);
     setServers([
       { id: 0, name: "Server 0", weight: 0.5, hits: [] },
       { id: 1, name: "Server 1", weight: 0.3, hits: [] },
@@ -146,8 +148,6 @@ function LoadBalancerDemo() {
             <Image
               src={LoadBalancer}
               alt="Load Balancer"
-              width={100}
-              height={100}
             />
             {activeHit && (
               <motion.div
@@ -164,7 +164,7 @@ function LoadBalancerDemo() {
           <div className={styles.servers}>
             {servers.map((server) => (
               <span key={server.id} className={styles.server}>
-                <Image src={Server} alt="Server" width={50} height={50} />
+                <Image src={Server} alt="Server" />
                 <div className={styles.hits}>
                   {server.hits.map((hitId) => (
                     <motion.div
@@ -208,6 +208,7 @@ function LoadBalancerDemo() {
                   <input
                     type="number"
                     value={server.weight}
+                    className={styles.weightInput}
                     onChange={(e) =>
                       handleWeightChange(server.id, e.target.value)
                     }
