@@ -1,11 +1,9 @@
 .wrapper {
     border-radius: 5px !important;
-
-    font-size: 0.8rem;
-    
   }
   .wrapper pre {
     overflow: auto;
+    font-size: 0.8rem;
   }
   .wrapper code {
     padding: 20px ;
@@ -14,8 +12,8 @@
     padding: 0px !important;
   }
   
-  @media (min-width: 768px) {
-    .wrapper {
-      font-size: 1.2rem; 
+  @media (max-width: 768px) {
+    .wrapper pre {
+      font-size: 0.5rem; 
     }
   }
