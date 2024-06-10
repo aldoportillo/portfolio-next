@@ -21,22 +21,20 @@
 
 .projectsWrapper{
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns:  1fr;
     grid-gap: 20px;
     width: 100%;
 }
 
-@media (min-width: 768px) {
-    .projects{
-        width: 75%;
-    }
-    .projectsWrapper{
-        grid-template-columns: repeat(2, 1fr); 
-    }
-}
-
-@media (min-width: 1024px) {
-    .projectsContainer{      
-        grid-template-columns: repeat(3, 1fr);
+@media (min-width: 800px) {
+    .projectsWrapper{      
+        grid-template-columns: repeat(2, 1fr);
     }
   }
+
+@media (min-width: 1250px) {
+    .projectsWrapper{      
+        grid-template-columns: repeat(3, 1fr);
+    }
+  } 
+
