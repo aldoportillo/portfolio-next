@@ -1,6 +1,7 @@
 "use client";
 import styled from "styled-components";
 import React, { useState } from "react";
+import { useRouter } from 'next/navigation';
 
 function ContactForm() {
     const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ function ContactForm() {
         message: '',
         honey: ''
     });
+    const router = useRouter();
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -34,8 +36,9 @@ function ContactForm() {
         }
     
         const result = await response.json();
-        alert('Email sent successfully!');
-        console.log(result);
+        router.push('/')
+
+        alert(`Thank you ${result.name} for your message! I will get back to you as soon as possible.`);
     
         setFormData({
           name: '',
