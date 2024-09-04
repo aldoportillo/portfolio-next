@@ -1,10 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import styles from "./ReverseLinkedListDemo.module.css";
 
 export default function ReverseLinkedListDemo() {
-  // Initial list of nodes
   const [list, setList] = useState([
     { value: 1, next: 2 },
     { value: 2, next: 3 },
@@ -13,24 +12,44 @@ export default function ReverseLinkedListDemo() {
     { value: 5, next: null },
   ]);
 
-  const [currentIndex, setCurrentIndex] = useState(0); 
-  const [previousIndex, setPreviousIndex] = useState(null); 
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [previousIndex, setPreviousIndex] = useState(null);
+  const nodeRefs = useRef([]);
 
+  // Function to handle the progression of the node reversal
   const handleStep = () => {
     if (currentIndex < list.length) {
       let newList = [...list];
       const prevNode = previousIndex !== null ? list[previousIndex] : null;
-      newList[currentIndex].next = prevNode ? prevNode.value : null; 
+      newList[currentIndex].next = prevNode ? prevNode.value : null;
       setList(newList);
 
-      setPreviousIndex(currentIndex); 
+      setPreviousIndex(currentIndex);
       setCurrentIndex((prev) => prev + 1);
     }
   };
 
+  // Function to handle reset
+  const handleReset = () => {
+    setList([
+      { value: 1, next: 2 },
+      { value: 2, next: 3 },
+      { value: 3, next: 4 },
+      { value: 4, next: 5 },
+      { value: 5, next: null },
+    ]);
+    setCurrentIndex(0);
+    setPreviousIndex(null);
+  };
+
+  // Render the nodes and arrows between them
   const renderNodes = () => {
     return list.map((node, index) => (
-      <div key={index} className={styles.nodeWrapper}>
+      <div
+        key={index}
+        className={styles.nodeWrapper}
+        ref={(el) => (nodeRefs.current[index] = el)} // Save reference to each node
+      >
         <div className={styles.node}>
           <div>{node.value}</div>
           <div className={styles.pointerInfo}>Next: {node.next ?? "null"}</div>
@@ -43,8 +62,8 @@ export default function ReverseLinkedListDemo() {
             height="50"
             viewBox="0 0 100 50"
             animate={{
-              x: currentIndex > index ? -100 : 0,
-              rotateY: currentIndex > index ? 180 : 0, 
+              x: currentIndex > index ? -80 : 0,
+              rotateY: currentIndex > index ? 180 : 0,
             }}
             transition={{ duration: 0.5 }}
           >
@@ -75,12 +94,14 @@ export default function ReverseLinkedListDemo() {
 
   return (
     <div className={styles.demoWrapper}>
-
       <div className={styles.linkedList}>{renderNodes()}</div>
 
-      <button onClick={handleStep} disabled={currentIndex >= list.length}>
-        Process Node
-      </button>
+      <div className={styles.controls}>
+        <button onClick={handleStep} disabled={currentIndex >= list.length}>
+          Process Node
+        </button>
+        <button onClick={handleReset}>Reset</button>
+      </div>
     </div>
   );
 }

@@ -11,8 +11,8 @@
   justify-content: center;
   align-items: center;
   padding-top: 80px;
-  flex-wrap: nowrap;  /* Ensure nodes stay inline */
-  overflow-x: auto;   /* Allow horizontal scrolling if needed */
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 .nodeWrapper {
@@ -47,12 +47,33 @@
   stroke-width: 2;
 }
 
+/* Controls Styling */
+.controls {
+  margin-top: 20px;
+}
+
+.controls button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  background-color: #5eddac;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.controls button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .arcArrow {
-    width: 70px;        /* Adjusted width for mobile */
-    height: 35px;       /* Adjusted height for mobile */
-    top: -35px;         /* Adjust positioning for smaller screens */
+    width: 70px;
+    height: 35px;
+    top: -35px;
     left: 20px;
   }
 
@@ -68,8 +89,8 @@
 
 @media (max-width: 480px) {
   .arcArrow {
-    width: 50px;        /* Further reduced width for smaller screens */
-    height: 25px;       /* Further reduced height for smaller screens */
+    width: 50px;
+    height: 25px;
     top: -30px;
     left: 15px;
   }
