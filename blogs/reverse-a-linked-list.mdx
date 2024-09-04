@@ -1,18 +1,113 @@
 ---
 title: "Reverse a Linked List"
 slug: "reverse-a-linked-list"
-tag_list: ["data structures", "algorithms", "DSA", "interview prep"]
+tag_list: ["data structures", "algorithms", "DSA", "interview prep", "java"]
 interactive: true
 description: "Reversing a linked list is a common interview question. Here is a simple implementation in Ruby."
 published_at: "2024-9-4T20:15:31Z"
 ---
 
-## Introduction
+## List Nodes
 
-Today we will be reversing a linked list. This is a common interview question and a good way to test your understanding of linked lists. 
+Linked lists are made up of **list nodes**. Each node contains a **value** and a reference to the **next node** in the list. The first node in the list is called the **head**, and the last node is called the **tail**. The tail node points to `null` to indicate the end of the list.
 
-## What is a Linked List?
+In Java, we represent a node using a class, and the reference to the next node is simply a pointer (reference) to the next node object.
 
-A linked list is a data structure that consists of a sequence of elements, where each element points to the next element in the sequence. The first element is called the head, and the last element called the tail points to nil/null.
+### Java ListNode Class
+```java
+class ListNode {
+    int value;
+    ListNode next;
+
+    ListNode(int value) {
+        this.value = value;
+        this.next = null;
+    }
+
+    // Utility function to convert a linked list to an array
+    static int[] toArray(ListNode head) {
+        List<Integer> result = new ArrayList<>();
+        ListNode current = head;
+        while (current != null) {
+            result.add(current.value);
+            current = current.next;
+        }
+        return result.stream().mapToInt(i -> i).toArray();
+    }
+
+    // Utility function to create a linked list from an array
+    static ListNode fromArray(int[] array) {
+        if (array.length == 0) return null;
+
+        ListNode head = new ListNode(array[0]);
+        ListNode current = head;
+        for (int i = 1; i < array.length; i++) {
+            current.next = new ListNode(array[i]);
+            current = current.next;
+        }
+        return head;
+    }
+}
+```
+
+### Time Complexity Consideration
+Removing an element from a linked list is typically O(N) time complexity unless you have a reference to the previous node (like in a doubly linked list). Removing the head node is O(1) time complexity, but removing the tail node requires O(N) if there’s no direct reference to it.
+
+## Demo
 
 <ReverseLinkedListDemo />
+
+## Solutions
+
+### Iterative Approach
+
+The iterative solution is straightforward. We traverse the linked list once, reversing the pointers at each step:
+
+```java
+
+public class ReverseLinkedList {
+
+    public static ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode current = head;
+
+        while (current != null) {
+            ListNode nextNode = current.next;  // Store the next node
+            current.next = prev;               // Reverse the pointer
+            prev = current;                    // Move prev and current one step forward
+            current = nextNode;
+        }
+
+        return prev;  // prev will be the new head of the reversed list
+    }
+}
+
+```
+
+### Recursive Approach
+
+The recursive approach reverses the linked list by making a recursive call that processes the nodes one by one:
+
+```java
+
+public class ReverseLinkedList {
+
+    public static ListNode reverseListRecursive(ListNode head, ListNode prev) {
+        if (head == null) return prev;        // Base case: return the new head
+
+        ListNode nextNode = head.next;        // Store the next node
+        head.next = prev;                     // Reverse the pointer
+        return reverseListRecursive(nextNode, head);  // Recur with the next node
+    }
+}
+
+```
+
+### Complexity Analysis
+
+Both the iterative and recursive approaches have the same time complexity:
+
+- Time Complexity: O(N), where N is the number of nodes in the linked list.
+- Space Complexity: O(1) for the iterative approach, and O(N) for the recursive approach due to the call stack.
+
+

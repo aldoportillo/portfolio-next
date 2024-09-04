@@ -1,14 +1,18 @@
 .demoWrapper {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  text-align: center;
+  background-color: #333;
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .linkedList {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  padding-top: 80px;
+  flex-wrap: nowrap;  /* Ensure nodes stay inline */
+  overflow-x: auto;   /* Allow horizontal scrolling if needed */
 }
 
 .nodeWrapper {
@@ -40,4 +44,42 @@
   position: absolute;
   top: -50px;
   left: 25px;
+  stroke-width: 2;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .arcArrow {
+    width: 70px;        /* Adjusted width for mobile */
+    height: 35px;       /* Adjusted height for mobile */
+    top: -35px;         /* Adjust positioning for smaller screens */
+    left: 20px;
+  }
+
+  .node {
+    width: 40px;
+    padding: 8px;
+  }
+
+  .nodeWrapper {
+    margin-right: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .arcArrow {
+    width: 50px;        /* Further reduced width for smaller screens */
+    height: 25px;       /* Further reduced height for smaller screens */
+    top: -30px;
+    left: 15px;
+  }
+
+  .node {
+    width: 35px;
+    padding: 6px;
+  }
+
+  .nodeWrapper {
+    margin-right: 15px;
+  }
 }

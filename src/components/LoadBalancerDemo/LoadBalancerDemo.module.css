@@ -1,7 +1,11 @@
 .demoWrapper {
   background-color: #333;
   width: 100%;
+  height: auto;
+  padding: 10px;
+  box-sizing: border-box;
 }
+
 .options {
   display: flex;
   justify-content: space-around;
@@ -18,8 +22,9 @@
   cursor: pointer;
   outline: none;
   transition: background-color 0.2s;
-  width: 100%;
+  width: calc(33% - 10px);
   background-color: #3c3c3c;
+  margin: 0 5px;
 }
 
 .options > button.selected {
@@ -31,6 +36,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .hit {
@@ -45,17 +51,17 @@
 
 .server {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: column;
   max-height: 80px;
   align-items: flex-start;
 }
 
-.loadBalancer > img{
+.loadBalancer img {
   width: 80px;
   height: 80px;
 }
 
-.server > img {
+.server img {
   width: 60px;
   height: 60px;
   margin: 10px;
@@ -75,6 +81,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .analytics h2 {
@@ -87,7 +95,7 @@
   margin-bottom: 10px;
 }
 
-.analytics  input {
+.analytics input {
   width: calc(100% - 20px);
   padding: 10px;
   border-radius: 5px;
@@ -132,4 +140,90 @@
   padding: 5px 10px;
   margin: 2px 0;
   border-radius: 3px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .options {
+    flex-direction: column;
+  }
+
+  .options > button {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .animationWrapper {
+    flex-direction: column;
+  }
+
+  .loadBalancer img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .server img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .analytics {
+    padding: 15px;
+  }
+
+  .analytics table th,
+  .analytics table td {
+    font-size: 14px;
+  }
+
+  .hit {
+    font-size: 0.75rem;
+  }
+
+  .loggerWrapper {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .options {
+    flex-direction: column;
+  }
+
+  .options > button {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .animationWrapper {
+    flex-direction: column;
+  }
+
+  .loadBalancer img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .server img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .analytics {
+    padding: 10px;
+  }
+
+  .analytics table th,
+  .analytics table td {
+    font-size: 12px;
+  }
+
+  .hit {
+    font-size: 0.6rem;
+  }
+
+  .loggerWrapper {
+    font-size: 12px;
+    max-height: 80px;
+  }
 }

@@ -50,7 +50,7 @@ export default function ReverseLinkedListDemo() {
           >
             <path
               d="M10 40 Q50 0 90 40"
-              stroke="green"
+              stroke="#5eddac"
               strokeWidth="2"
               fill="transparent"
               markerEnd="url(#arrowhead)"
@@ -64,7 +64,7 @@ export default function ReverseLinkedListDemo() {
                 refY="3.5"
                 orient="auto"
               >
-                <polygon points="0 0, 10 3.5, 0 7" fill="green" />
+                <polygon points="0 0, 10 3.5, 0 7" fill="#5eddac" />
               </marker>
             </defs>
           </motion.svg>
@@ -75,7 +75,6 @@ export default function ReverseLinkedListDemo() {
 
   return (
     <div className={styles.demoWrapper}>
-      <h2>Iterative Linked List Reversal</h2>
 
       <div className={styles.linkedList}>{renderNodes()}</div>
 
