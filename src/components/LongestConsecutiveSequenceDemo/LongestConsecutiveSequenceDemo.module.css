@@ -1,0 +1,25 @@
+.sequenceContainer {
+    text-align: center;
+    margin-top: 20px;
+  }
+  .arrayContainer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .arrayElement {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #5eddac;
+    border-radius: 8px;
+    font-size: 1.2em;
+    color: white;
+  }
+  .highlight {
+    background-color: #f49a73;
+  }
+  
