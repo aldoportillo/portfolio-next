@@ -95,7 +95,7 @@ export default function LinksContent() {
       >
         <Image src="/portrait.jpg" alt="Portfolio Picture" width={150} height={150} className={styles.profilePortrait} />
         <h1 className={styles.title}>Aldo Portillo</h1>
-        <p className={styles.subtitle}>Find me here</p>
+        <p className={styles.subtitle}>Software Engineer</p>
         <div className={styles.socialIcons}>
           <motion.a 
             href='https://www.linkedin.com/in/aldo-portillo-09b187253/' 
