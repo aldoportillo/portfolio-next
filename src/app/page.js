@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Typing from "/public/typing.gif";
 import Image from "next/image";
-import styles from "./Home.module.css"
+import SpotifyPlaylist from "../components/SpotifyPlaylist/SpotifyPlaylist";
+import styles from "./Home.module.css";
 
 export const metadata = {
   title: "Home | Aldo Portillo",
@@ -25,6 +26,7 @@ function Home({ blogData }) {
           Based in Chicago. Blending problem-solving skills with creativity and resilience learned from my roles as an MMA fighter and bartender. My diverse experiences fuel my ability to approach technology challenges from unique angles, constantly pushing for growth and innovation.
         </p>
       </div>
+      <SpotifyPlaylist />
       <div className={styles.aboutMe}>
         <h2>About Me</h2>
         <p>Hello! I&apos;m <strong>Aldo Portillo</strong>, a passionate <strong>Full Stack Engineer</strong> based in Chicago. With a foundational background in organic chemistry, I bring a methodical and analytical approach to developing robust, scalable web applications.</p>

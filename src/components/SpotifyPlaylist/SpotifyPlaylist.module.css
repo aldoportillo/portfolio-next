@@ -1,74 +1,69 @@
 .container {
-    padding: 20px;
-    background-color: #242424;
-    color: rgba(255, 255, 255, 0.87);
-    font-family: 'monospace', monospace;
-    border-radius: 8px;
-    max-width: 800px;
-    margin: 0 auto;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .title {
-    color: #5eddac;
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 1.8rem;
-  }
-  
-  .loading,
-  .error {
-    padding: 20px;
-    text-align: center;
-    font-size: 1.2rem;
-    color: #ff6b6b; /* Error color */
-  }
-  
-  .loading {
-    color: #66bb6a; /* Loading color */
-  }
-  
-  .trackList {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .trackItem {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background-color: #36393f;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    transition: background-color 0.2s, transform 0.2s;
-  }
-  
-  .trackItem:hover {
-    background-color: #5eddac;
-    color: #242424;
-    transform: translateX(5px);
-  }
-  
-  .albumArt {
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
-    margin-right: 15px;
-    object-fit: cover;
-  }
-  
-  .trackInfo {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .trackName {
-    font-weight: bold;
-    font-size: 1rem;
-  }
-  
-  .trackArtists {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
-  }
+  max-width: 300px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative; 
+  font-family: sans-serif;
+}
+
+
+.albumCoverWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.trackInfo {
+  max-width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.trackName {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.artistName {
+  font-size: 0.85rem;
+  margin: 0;
+  color: #ccc;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.controlButton {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.controlButton:hover {
+  transform: scale(1.2);
+}
