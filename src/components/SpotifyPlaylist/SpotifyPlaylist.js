@@ -136,6 +136,13 @@ export default function SpotifyPlaylist() {
           </div>
         </div>
       </div>
+
+      <p className={styles.text}>
+        I have a playlist for coding
+      </p>
+      <p className={styles.small}>
+        explore my <a href="https://open.spotify.com/playlist/2Nct7cXHNSIUpqmoSqKjZd?si=7c8d3974e67f43a5" target='blank' className={styles.accent}>Wired In</a> Playlist
+      </p>
     </div>
   );
 }
