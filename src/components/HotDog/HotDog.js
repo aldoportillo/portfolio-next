@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useState } from "react";
+import styled, { keyframes } from "styled-components";
 
-const colorHotdog = '#CA6A41';
-const colorBread = '#EDB662';
-const colorMustard = '#F5D530';
-const colorBackground = '#1b2532';
+const colorHotdog = "#CA6A41";
+const colorBread = "#EDB662";
+const colorMustard = "#F5D530";
+const colorBackground = "#1b2532";
 
-const WienerScale = '10em';
+const WienerScale = "10em";
 
 const hover = keyframes`
   0% {
@@ -26,19 +26,21 @@ const hover = keyframes`
 function getBitePosition(biteStep) {
   switch (biteStep) {
     case 1:
-      return '-60%';
+      return "-60%";
     case 2:
-      return '-35%';
+      return "-35%";
     case 3:
-      return '0%';
+      return "0%";
     default:
-      return '-100%';
+      return "-100%";
   }
 }
 
 const Center = styled.div`
-    background-color: ${colorBackground};
-    
+  background-color: ${colorBackground};
+  padding: 20px;
+  border-radius: 16px;
+  width: 300px; /* arbitrary width */
 `;
 
 const WienerContainer = styled.div`
@@ -46,16 +48,15 @@ const WienerContainer = styled.div`
   box-sizing: border-box;
   font-size: ${WienerScale};
   width: 1em;
-  height: 1em;
+  height: 0.5em;
   display: flex;
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     z-index: 10;
     display: block;
     position: absolute;
@@ -89,7 +90,7 @@ const Wiener = styled.div`
 
   /* Bread (on top) */
   &::before {
-    content: '';
+    content: "";
     display: block;
     font-size: 0.75em;
     width: 1em;
@@ -104,7 +105,7 @@ const Wiener = styled.div`
   }
 
   &.mustard::after {
-    content: '';
+    content: "";
     display: block;
     font-size: 0.75em;
     width: 1em;
@@ -122,12 +123,35 @@ const Wiener = styled.div`
   }
 `;
 
+const Text = styled.p`
+  color: white;
+  font-family: "Wotfard", sans-serif;
+  margin-bottom: 0;
+  overflow: wrap;
+`;
+
+const Small = styled.p`
+  font-size: 0.8rem;
+  margin-top: 5px;
+  color: hsl(210deg 9% 40%);
+`;
+
+const Accent = styled.span`
+  color: #5eddac;
+`;
 
 const WienerBiter = () => {
   const [biteStep, setBiteStep] = useState(0);
 
   const handleBite = () => {
-    setBiteStep((prev) => (prev + 1) % 4);
+    setBiteStep((prev) => {
+      const nextStep = prev + 1;
+      if (nextStep === 3) {
+        window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
+        return 0;
+      }
+      return nextStep;
+    });
   };
 
   return (
@@ -135,6 +159,12 @@ const WienerBiter = () => {
       <WienerContainer biteStep={biteStep} onClick={handleBite}>
         <Wiener className="mustard" />
       </WienerContainer>
+      <div>
+        <Text>
+          My most FAQ: does my family own <Accent>Portillo&apos;s</Accent>?
+        </Text>
+        <Small>click the hot dog 3 times for the the answer</Small>
+      </div>
     </Center>
   );
 };
