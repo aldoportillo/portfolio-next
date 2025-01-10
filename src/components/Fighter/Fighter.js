@@ -11,7 +11,8 @@ const KICK_GIF = "/kick.gif";
 
 const Wrapper = styled.div`
   background-color: #1b2532;
-  width: 250px; /* Change to 100% */
+  grid-area: mma;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;

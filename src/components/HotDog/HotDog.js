@@ -40,7 +40,8 @@ const Center = styled.div`
   background-color: ${colorBackground};
   padding: 20px;
   border-radius: 16px;
-  width: 300px; /* arbitrary width */
+  width: 100%;
+  grid-area: hotdog;
 `;
 
 const WienerContainer = styled.div`
@@ -117,6 +118,7 @@ const Wiener = styled.div`
   }
 
   &.mustard::after {
+  
     background-color: ${colorMustard};
     height: 0.06em;
     border-radius: 0.03em;

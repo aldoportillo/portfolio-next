@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import styles from './SpotifyPlaylist.module.css';
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import styles from "./SpotifyPlaylist.module.css";
 
 export default function SpotifyPlaylist() {
   const [playlist, setPlaylist] = useState(null);
@@ -16,9 +16,9 @@ export default function SpotifyPlaylist() {
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const response = await fetch('/api/spotify');
+        const response = await fetch("/api/spotify");
         if (!response.ok) {
-          throw new Error('Failed to fetch playlist');
+          throw new Error("Failed to fetch playlist");
         }
         const data = await response.json();
         setPlaylist(data);
@@ -54,7 +54,7 @@ export default function SpotifyPlaylist() {
 
     if (track.preview_url) {
       const newAudio = new Audio(track.preview_url);
-      newAudio.addEventListener('ended', () => {
+      newAudio.addEventListener("ended", () => {
         setIsPlaying(false);
       });
       setAudio(newAudio);
@@ -102,11 +102,10 @@ export default function SpotifyPlaylist() {
   const currentItem = playlist.tracks.items[currentTrackIndex];
   const currentTrack = currentItem?.track || {};
   const albumImages = currentTrack.album?.images || [];
-  const trackName = currentTrack.name || 'Untitled';
-  const artistName = currentTrack.artists?.[0]?.name || 'Unknown Artist';
+  const trackName = currentTrack.name || "Untitled";
+  const artistName = currentTrack.artists?.[0]?.name || "Unknown Artist";
 
-  const albumCoverUrl =
-    albumImages[0]?.url || '/placeholder.png';
+  const albumCoverUrl = albumImages[0]?.url || "/placeholder.png";
 
   return (
     <div className={styles.container}>
@@ -128,7 +127,7 @@ export default function SpotifyPlaylist() {
               ◀
             </button>
             <button onClick={handlePlayPause} className={styles.controlButton}>
-              {isPlaying ? '❙❙' : '►'}
+              {isPlaying ? "❙❙" : "►"}
             </button>
             <button onClick={handleNextTrack} className={styles.controlButton}>
               ▶
@@ -137,11 +136,17 @@ export default function SpotifyPlaylist() {
         </div>
       </div>
 
-      <p className={styles.text}>
-        I have a playlist for coding
-      </p>
+      <p className={styles.text}>I have a playlist for coding</p>
       <p className={styles.small}>
-        explore my <a href="https://open.spotify.com/playlist/2Nct7cXHNSIUpqmoSqKjZd?si=7c8d3974e67f43a5" target='blank' className={styles.accent}>Wired In</a> Playlist
+        explore my{" "}
+        <a
+          href="https://open.spotify.com/playlist/2Nct7cXHNSIUpqmoSqKjZd?si=7c8d3974e67f43a5"
+          target="blank"
+          className={styles.accent}
+        >
+          Wired In
+        </a>{" "}
+        Playlist
       </p>
     </div>
   );

@@ -1,13 +1,13 @@
 .container {
   background-color: #1b2532;
-  width: 250px; /* Change to 100% */
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 10px 20px;
   border-radius: 16px;
+  grid-area: playlist;
 }
-
 
 .albumCoverWrapper {
   position: relative;
@@ -70,7 +70,7 @@
 
 .text {
   color: white;
-  font-family: 'Wotfard', sans-serif;
+  font-family: "Wotfard", sans-serif;
   margin-bottom: 0;
 }
 
@@ -78,8 +78,8 @@
   color: #5eddac;
 }
 
-.small{
+.small {
   font-size: 0.8rem;
   margin-top: 5px;
   color: hsl(210deg 9% 40%);
-} 
+}
