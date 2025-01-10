@@ -9,22 +9,39 @@ const JAB_GIF = "/jab.gif";
 const CROSS_GIF = "/cross.gif";
 const KICK_GIF = "/kick.gif";
 
-const Stage = styled.div`
+const Wrapper = styled.div`
+  background-color: #1b2532;
+  width: 250px; /* Change to 100% */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 16px;
+`;
+
+const FighterBase = styled.div`
   position: relative;
-  width: 450px;
-  height: 330px;
+  width: 50px;
+  height: 50px;
   background-size: contain;
   margin-right: 20px;
 `;
 
-const FighterBase = styled.div`
-  position: absolute;
-  bottom: 112px;
-  margin-left: 150px;
+const Text = styled.p`
+  color: white;
+  font-family: "Wotfard", sans-serif;
+  margin-bottom: 0;
+  overflow: wrap;
+`;
 
-  &.flip {
-    transform: scaleX(-1);
-  }
+const Small = styled.p`
+  font-size: 0.8rem;
+  margin-top: 5px;
+  color: hsl(210deg 9% 40%);
+`;
+
+const Accent = styled.span`
+  color: #5eddac;
 `;
 
 const getFighterGif = (fighterClasses) => {
@@ -63,6 +80,13 @@ const Fighter = () => {
     setTimeout(() => removeKenClass("reversekick"), 500);
   };
 
+  const randomize = () => {
+    const random = Math.floor(Math.random() * 3);
+    if (random === 0) punch();
+    if (random === 1) kick();
+    if (random === 2) rkick();
+  }
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       switch (e.keyCode) {
@@ -82,18 +106,23 @@ const Fighter = () => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 5. Determine which GIF to display based on Ken’s current classes
   const fighterGif = getFighterGif(fighterClasses);
 
   return (
-    <Stage>
-      {/* We still apply any relevant classes like "flip" */}
+    <Wrapper onClick={randomize}>
       <FighterBase id="ken" className={fighterClasses.join(" ")}>
         <Image src={fighterGif} alt="fighter" width={50} height={50} />
       </FighterBase>
-    </Stage>
+      <div>
+        <Text>
+          I enjoy training <Accent>MMA</Accent>
+        </Text>
+        <Small>i have competed in fights and tournaments</Small>
+      </div>
+    </Wrapper>
   );
 };
 
