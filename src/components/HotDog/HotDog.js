@@ -15,7 +15,6 @@ const hover = keyframes`
     transform: translateY(0);
   }
   50% {
-    /* move it up 1% of WienerScale */
     transform: translateY(-${parseFloat(WienerScale) * 0.01}px);
   }
   100% {
@@ -37,7 +36,7 @@ function getBitePosition(biteStep) {
 }
 
 const Center = styled.div`
-  background-color: ${colorBackground};
+  background-color: var(--secondary);
   padding: 20px;
   border-radius: 16px;
   width: 100%;
@@ -61,7 +60,7 @@ const WienerContainer = styled.div`
     z-index: 10;
     display: block;
     position: absolute;
-    background-color: ${colorBackground};
+    background-color: var(--secondary);
     height: 0.5em;
     border-radius: 0.25em;
     top: 50%;
@@ -89,7 +88,6 @@ const Wiener = styled.div`
   background-color: ${colorHotdog};
   animation: ${hover} 3s infinite linear;
 
-  /* Bread (on top) */
   &::before {
     content: "";
     display: block;

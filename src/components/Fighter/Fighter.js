@@ -4,54 +4,6 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-const STANCE_GIF = "/stance.gif";
-const JAB_GIF = "/jab.gif";
-const CROSS_GIF = "/cross.gif";
-const KICK_GIF = "/kick.gif";
-
-const Wrapper = styled.div`
-  background-color: #1b2532;
-  grid-area: mma;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  border-radius: 16px;
-`;
-
-const FighterBase = styled.div`
-  position: relative;
-  width: 50px;
-  height: 50px;
-  background-size: contain;
-  margin-right: 20px;
-`;
-
-const Text = styled.p`
-  color: white;
-  font-family: "Wotfard", sans-serif;
-  margin-bottom: 0;
-  overflow: wrap;
-`;
-
-const Small = styled.p`
-  font-size: 0.8rem;
-  margin-top: 5px;
-  color: hsl(210deg 9% 40%);
-`;
-
-const Accent = styled.span`
-  color: #5eddac;
-`;
-
-const getFighterGif = (fighterClasses) => {
-  if (fighterClasses.includes("punch")) return JAB_GIF;
-  if (fighterClasses.includes("kick")) return CROSS_GIF;
-  if (fighterClasses.includes("reversekick")) return KICK_GIF;
-  return STANCE_GIF;
-};
-
 const Fighter = () => {
   const [fighterClasses, setFighterClasses] = useState(["stance"]);
 
@@ -128,3 +80,51 @@ const Fighter = () => {
 };
 
 export default Fighter;
+
+const STANCE_GIF = "/stance.gif";
+const JAB_GIF = "/jab.gif";
+const CROSS_GIF = "/cross.gif";
+const KICK_GIF = "/kick.gif";
+
+const Wrapper = styled.div`
+  background-color: #1b2532;
+  grid-area: mma;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 16px;
+`;
+
+const FighterBase = styled.div`
+  position: relative;
+  width: 50px;
+  height: 50px;
+  background-size: contain;
+  margin-right: 20px;
+`;
+
+const Text = styled.p`
+  color: white;
+  font-family: "Wotfard", sans-serif;
+  margin-bottom: 0;
+  overflow: wrap;
+`;
+
+const Small = styled.p`
+  font-size: 0.8rem;
+  margin-top: 5px;
+  color: hsl(210deg 9% 40%);
+`;
+
+const Accent = styled.span`
+  color: #5eddac;
+`;
+
+const getFighterGif = (fighterClasses) => {
+  if (fighterClasses.includes("punch")) return JAB_GIF;
+  if (fighterClasses.includes("kick")) return CROSS_GIF;
+  if (fighterClasses.includes("reversekick")) return KICK_GIF;
+  return STANCE_GIF;
+};
