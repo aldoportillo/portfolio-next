@@ -4,6 +4,7 @@ import TransitionProvider from "@/components/TransitionProvider";
 import Link from "next/link";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
+import { Analytics } from "@vercel/analytics/react"
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
           <NavBar />
         </header>
         <main>{children}</main>
+        <Analytics />
         <Footer />
       </TransitionProvider>
       </body>
