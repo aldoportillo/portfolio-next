@@ -2,29 +2,35 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
+
   --background-color: #242424;
+  --bg-color: #242424;
+  --header: #121212;
   --accent: #5eddac;
+  --highlight-color: #5eddac;
+  --text-color: #f5f5f5;
+  --secondary-text-color: #ccc;
+  --max-content-width: 1000px;
+
+  --primary: hsl(210deg 55% 35%);
+  --secondary: #5eddac;
+  --text: hsl(210deg 30% 25%);
+  --background: hsl(210deg 20% 98%);
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --header: #121212;
-
-  --bg-color: #242424;
-  --text-color: #f5f5f5;
-  --secondary-text-color: #ccc;
-  --highlight-color: #5eddac;
-  --max-content-width: 1000px;
-  --accent: #5eddac; /* In case you want an additional variable for accent */
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 html {
   max-width: 100%;
   overflow-x: hidden;
@@ -43,30 +49,9 @@ body {
   justify-content: space-between;
   max-width: 80%;
   margin: 0 auto;
-  background-color: var(--bg-color);
   color: var(--text-color);
   font-family: sans-serif;
   line-height: 1.6;
-}
-
-main {
-  background-color: var(--background-color);
-  width: 100%;
-  border-radius: 15px;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  background-color: var(--header);
-  justify-content: space-between;
-  padding: 2vh 0px;
 }
 
 main {
@@ -76,6 +61,16 @@ main {
   justify-content: center;
   width: 100%;
   flex: 1;
+  border-radius: 15px;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: var(--header);
+  justify-content: space-between;
+  padding: 2vh 0;
 }
 
 @media (max-width: 768px) {
@@ -87,37 +82,4 @@ main {
   body {
     max-width: 100%;
   }
-}
-
-.header-logo {
-  font-size: 2rem;
-  background-color: #121212;
-  border-radius: 0.25rem;
-  padding: 0.25rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.header-logo > span:first-child {
-  color: white;
-  margin-right: 0.25rem;
-}
-
-.logo-container {
-  display: flex;
-  justify-content: center;
-}
-
-.logo-text {
-  color: #121212;
-  width: 7rem;
-  height: 2rem;
-  border-radius: 0.25rem;
-  background-color: #5eddac;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
